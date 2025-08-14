@@ -1,0 +1,46 @@
+{
+  "name": "luci-theme-orion",
+  "version": "0.0.1",
+  "description": "Modern theme for OpenWrt LuCI - Orion",
+  "scripts": {
+    "build": "tailwindcss -i ./src/styles/main.css -o ./htdocs/luci-static/orion/orion.css --watch",
+    "build-prod": "tailwindcss -i ./src/styles/main.css -o ./htdocs/luci-static/orion/orion.css --minify",
+    "dev": "tailwindcss -i ./src/styles/main.css -o ./htdocs/luci-static/orion/orion.css --watch --poll",
+    "lint": "eslint htdocs/luci-static/orion/resources/js/*.js --fix",
+    "format": "prettier --write '**/*.{js,css,html,htm,json}'"
+  },
+  "keywords": [
+    "openwrt",
+    "luci",
+    "theme",
+    "tailwindcss",
+    "heroui",
+    "orion",
+    "modern",
+    "responsive"
+  ],
+  "author": {
+    "name": "CoolLoong",
+    "url": "https://github.com/CoolLoong"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CoolLoong/luci-theme-orion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CoolLoong/luci-theme-orion/issues"
+  },
+  "homepage": "https://github.com/CoolLoong/luci-theme-orion#readme",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "postcss": "^8.4.32",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

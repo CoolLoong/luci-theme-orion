@@ -1,0 +1,100 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+htdocs/luci-static/orion/orion.css
+
+# Production templates
+template/*.prod
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Package files
+*.tar.gz
+*.zip
+luci-theme-orion/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Test files
+test/
+tests/
+__tests__/
+
+# Build and Release Folders (keeping original)
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+
+# Other files and folders (keeping original)
+.settings/
+
+# Executables (keeping original)
+*.swf
+*.air
+*.ipa
+*.apk
+/.idea/
+/.claude/

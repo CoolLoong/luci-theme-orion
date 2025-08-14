@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "globals": {
+    "L": "readonly",
+    "LuCI": "readonly",
+    "OrionApp": "writable"
+  },
+  "rules": {
+    "indent": ["error", 4],
+    "linebreak-style": "off",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["warn", "error", "log"] }],
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": "error",
+    "no-case-declarations": "off",
+    "no-undef": ["error", { "typeof": false }]
+  }
+}

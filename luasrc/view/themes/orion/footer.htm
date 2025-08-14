@@ -1,0 +1,245 @@
+<%#
+Orion os is made from me for all .. especially for indo wrt members and fan of OpenWrt or DBAI Community
+luci-theme-orion
+Copyright 2024 CoolLoong
+<github.com/CoolLoong>
+Have a bug? Please create an issue here on GitHub!
+
+luci-theme-material
+Copyright 2015 Lutty Yang
+<lutty@wcan.in>
+
+luci-theme-bootstrap:
+Copyright 2008 Steven Barth
+<steven@midlink.org>
+Copyright 2008 Jo-Philipp Wich
+<jow@openwrt.org>
+Copyright 2012 David Menting
+<david@nut-bolt.nl>
+
+MUI:
+https://github.com/muicss/mui
+
+Licensed to the public under the Apache License 2.0
+-%>
+<%
+local ver = require "luci.version"
+local uci = require "luci.model.uci".cursor()
+local config = uci:get_all("orion", "theme")
+
+-- Table to store navbar icons
+local icon = {}
+
+-- Iterate through all navbar entries
+uci:foreach("orion", "navbar", function(section)
+	local address = section.address
+	local icon_url = section.icon
+
+	if address and icon_url then
+		icon_url = string.gsub(icon_url, "^/www/luci%-static/orion/", "")
+		icon[address] = icon_url
+	end
+end)
+
+-- Check navbar enable status
+local navbar_enabled = config.navbar == "1"
+
+-- Calculate number of enabled navbar
+local num_links = 0
+uci:foreach("orion", "navbar", function(section)
+if section.enable == "Enable" then
+num_links = num_links + 1
+end
+end)
+-- Add 1 for the sidebar button
+num_links = num_links + 1
+
+-- Calculate link width for responsive design
+local link_width = string.format("calc(100%% / %d)", num_links)
+%>
+
+<style>
+    @media screen and (max-width: 720px) {
+        .navbar a {
+            width: <%=link_width%>;
+        }
+    }
+
+    <% if not navbar_enabled then %>
+    .navbar {
+        display: none;
+    }
+    <% end %>
+</style>
+
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="mt-12 pb-6">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="glass-panel rounded-xl p-6 text-center">
+            <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <img src="<%=media%>/resources/brand.png" alt="Orion OS" class="h-8 w-auto">
+                    <div class="text-left">
+                        <h4 class="text-white font-semibold">Orion</h4>
+                        <p class="text-neutral-400 text-sm">v0.0.1</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 text-sm text-neutral-400">
+                    <span><%=ver.luciname%></span>
+                    <span>·</span>
+                    <a href="https://github.com/CoolLoong/luci-theme-orion"
+                       class="hover:text-primary-400 transition-colors"
+                       target="_blank" rel="noopener">
+                        GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</main>
+</div>
+
+<!-- Enhanced Mobile Navbar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden" id="mobileNavbar">
+    <div class="glass-heavy border-t border-white/10">
+        <% if navbar_enabled then %>
+        <div class="flex items-center justify-around py-2">
+            <%
+            local navbar_items = {}
+            local menu_button_name = "Menu"
+
+            uci:foreach("orion", "navbar", function(section)
+            if section.enable == "Enable" then
+            table.insert(navbar_items, section)
+            -- Use the first navbar item's name as menu button name, or keep default
+            if #navbar_items == 1 and section.name then
+            menu_button_name = section.name
+            end
+            end
+            end)
+
+            -- Sort by line number
+            table.sort(navbar_items, function(a, b) return tonumber(a.line) < tonumber(b.line) end)
+
+            -- Calculate link width including the menu button
+            local total_items = #navbar_items + 1
+            local item_width = string.format("calc(100%% / %d)", total_items)
+
+            -- Render navbar items
+            for i, section in ipairs(navbar_items) do
+				local address = section.address
+				local icon_url = icon[address] or 'gaya/icon/navbar/overview.png'
+				local target_blank = section.newtab == "Yes" and 'target="_blank"' or ''
+            local title = section.name or 'Menu'
+            %>
+            <a href="<%=address%>" <%=target_blank%>
+            class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-white/10 transition-all duration-300
+            group"
+            style="width: <%=item_width%>;">
+            <div class="w-6 h-6 relative">
+                <img src="<%=media%>/<%=icon_url%>" alt="<%=title%>"
+                     class="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"/>
+                <div class="absolute inset-0 bg-primary-500 rounded opacity-0 group-hover:opacity-20 transition-opacity"></div>
+            </div>
+            <span class="text-xs text-neutral-400 group-hover:text-white transition-colors truncate w-full text-center"><%=title%></span>
+            </a>
+            <%
+            end
+
+            -- Always add menu toggle button as the last item
+            %>
+            <button onclick="toggleSidebar()"
+                    class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+                    style="width: <%=item_width%>;">
+                <div class="w-6 h-6 relative">
+                    <svg class="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity text-neutral-400"
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <div class="absolute inset-0 bg-primary-500 rounded opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                </div>
+                <span class="text-xs text-neutral-400 group-hover:text-white transition-colors truncate w-full text-center"><%=menu_button_name%></span>
+            </button>
+        </div>
+        <% end %>
+    </div>
+</nav>
+<!-- Enhanced JavaScript for HeroUI interactions -->
+<script>
+    // Mobile Navbar Scroll Behavior
+    {
+        const nav = document.querySelector('#mobileNavbar');
+        let lastScrollY = window.scrollY;
+        let isNavbarHidden = false;
+
+        const handleScroll = () => {
+            if (lastScrollY < window.scrollY && window.scrollY > 100) {
+                // Scrolling down - hide navbar
+                if (!isNavbarHidden) {
+                    nav.style.transform = 'translateY(100%)';
+                    isNavbarHidden = true;
+                }
+            } else {
+                // Scrolling up - show navbar
+                if (isNavbarHidden) {
+                    nav.style.transform = 'translateY(0)';
+                    isNavbarHidden = false;
+                }
+            }
+            lastScrollY = window.scrollY;
+        };
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('beforeunload', () => {
+            window.removeEventListener('scroll', handleScroll);
+        });
+    }
+
+    // Enhanced UI Interactions
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const body = document.body;
+
+        if (!sidebar || !overlay) return;
+
+        // Check if sidebar is currently hidden
+        const isHidden = sidebar.classList.contains('-translate-x-full');
+
+        if (isHidden) {
+            // Show sidebar
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            overlay.classList.remove('opacity-0', 'invisible');
+            overlay.classList.add('opacity-100', 'visible');
+            body.classList.add('overflow-hidden');
+        } else {
+            // Hide sidebar
+            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.remove('translate-x-0');
+            overlay.classList.add('opacity-0', 'invisible');
+            overlay.classList.remove('opacity-100', 'visible');
+            body.classList.remove('overflow-hidden');
+        }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function () {
+        // Hide loading after page load
+        setTimeout(hideLoading, 500);
+        // Add smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Show page content to prevent FOUC
+        setTimeout(() => {
+            document.body.classList.add('loaded');
+        }, 100);
+    });
+</script>
+<script type="text/javascript">L.require('menu-orion');</script>
+</body>
+</html>

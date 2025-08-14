@@ -1,0 +1,1080 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font Imports */
+@font-face {
+    font-family: "Inter-Regular";
+    src: url('resources/fonts/Inter-Regular.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Inter-Medium";
+    src: url('resources/fonts/Inter-Medium.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: "Inter-Bold";
+    src: url('resources/fonts/Inter-Bold.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: "Inter-Black";
+    src: url('resources/fonts/Inter-Black.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: "Quicksand-Regular";
+    src: url('resources/fonts/Quicksand-Regular.ttf') format('truetype');
+    font-display: swap;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Quicksand-Bold";
+    src: url('resources/fonts/Quicksand-Bold.ttf') format('truetype');
+    font-display: swap;
+    font-weight: 700;
+}
+
+@layer base {
+    * {
+        @apply border-gray-300;
+    }
+
+    html {
+        @apply scroll-smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
+    body {
+        @apply min-h-screen text-white overflow-x-hidden;
+        font-family: 'Inter-Regular', system-ui, sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #222235 50%, #0f172a 100%);
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background: transparent;
+    }
+
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #0a0a0a 0%, #222235 50%, #0f172a 100%);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        min-height: 20px;
+        transition: background 0.2s;
+    }
+
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    /* LuCI Base Elements */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-sans font-bold text-white;
+    }
+
+    h1 {
+        @apply text-3xl leading-9;
+    }
+
+    h2 {
+        @apply text-2xl leading-8;
+    }
+
+    h3 {
+        @apply text-xl leading-7;
+    }
+
+    h4 {
+        @apply text-lg leading-7;
+    }
+
+    h5 {
+        @apply text-base leading-6;
+    }
+
+    h6 {
+        @apply text-sm leading-5;
+    }
+
+    p {
+        @apply text-neutral-300 leading-relaxed;
+    }
+
+    a {
+        @apply text-blue-400 transition-colors duration-200;
+    }
+
+    a:hover {
+        @apply text-blue-300;
+    }
+
+    /* Form Elements */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input[type="number"],
+    select,
+    textarea {
+        @apply rounded-xl px-4 py-3 text-white border-0 transition-all duration-200;
+        background: rgba(34, 35, 53, 0.6);
+    }
+
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder,
+    input[type="email"]::placeholder,
+    input[type="number"]::placeholder,
+    select::placeholder,
+    textarea::placeholder {
+        @apply text-neutral-400;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+        @apply outline-none;
+        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+        --tw-ring-opacity: 1;
+        --tw-ring-color: rgb(0 153 204 / var(--tw-ring-opacity));
+    }
+
+    /* Buttons */
+    button,
+    .btn,
+    input[type="submit"],
+    input[type="button"] {
+        @apply inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer;
+    }
+
+    .btn-primary,
+    input[type="submit"] {
+        @apply text-white shadow-lg;
+        background: linear-gradient(to right, #0099cc, #2563eb);
+    }
+
+    .btn-primary:hover,
+    input[type="submit"]:hover {
+        @apply -translate-y-0.5 shadow-xl;
+    }
+
+    .btn-primary:active,
+    input[type="submit"]:active {
+        @apply translate-y-0;
+    }
+
+    /* Tables */
+    table {
+        @apply w-full rounded-2xl overflow-hidden;
+        background: rgba(34, 35, 53, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    thead {
+        @apply bg-gray-700;
+    }
+
+    th {
+        @apply px-6 py-4 text-left text-sm font-medium uppercase tracking-wider text-neutral-300 border-b border-gray-600;
+    }
+
+    td {
+        @apply px-6 py-4 text-sm text-gray-200 border-b border-gray-800;
+    }
+
+    tr:hover {
+        @apply bg-gray-700 bg-opacity-50;
+    }
+}
+
+@layer utilities {
+    /* Animations */
+    @keyframes slideDownSmooth {
+        from {
+            opacity: 0;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        to {
+            opacity: 1;
+            max-height: 400px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+    }
+
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: translateX(0) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(4px) scale(1);
+        }
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.3s ease-out;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(34, 35, 53, 0.3);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(0, 153, 204, 0.5);
+        border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 153, 204, 0.7);
+    }
+
+    /* Text Shadows */
+    .text-shadow-sm {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Legacy LuCI Compatibility - Using standard CSS where Tailwind classes conflict */
+/* Glass Panel Effects */
+.glass-panel {
+    background-color: rgba(34, 35, 53, 0.6);
+    backdrop-filter: blur(10px);
+    @apply border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-heavy {
+    background-color: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    @apply border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.glass-ultra {
+    background-color: rgba(34, 35, 53, 0.9);
+    backdrop-filter: blur(40px);
+    @apply border;
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Navigation Components */
+.navbar-orion {
+    @apply border-b border-gray-600 sticky top-0 z-50;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+}
+
+.nav-item {
+    @apply px-4 py-2 rounded-xl text-neutral-300 transition-all duration-200;
+}
+
+.nav-item:hover {
+    @apply text-white bg-gray-700;
+}
+
+.nav-item.active {
+    @apply text-white;
+    background: linear-gradient(to right, #0099cc, #2563eb);
+    box-shadow: 0 0 20px rgba(9, 12, 196, 0.3);
+}
+
+/* Content Area */
+.content-main {
+    @apply ml-64 min-h-screen p-8 pt-20;
+}
+
+.content-card {
+    @apply mb-6 rounded-2xl p-6;
+    background: rgba(34, 35, 53, 0.6);
+    backdrop-filter: blur(20px);
+    @apply border border-white/10;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* LuCI Specific Components */
+.luci-header {
+    @apply px-6 py-4 border-b border-gray-600;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+}
+
+.luci-breadcrumb {
+    @apply flex items-center gap-2 text-sm text-neutral-400;
+}
+
+.luci-breadcrumb a {
+    @apply text-neutral-300 transition-colors duration-150;
+}
+
+.luci-breadcrumb a:hover {
+    @apply text-blue-400;
+}
+
+.luci-tabs {
+    @apply flex gap-1 bg-gray-700 rounded-2xl p-1;
+}
+
+.luci-tab {
+    @apply rounded-xl px-4 py-2 text-sm font-medium text-neutral-400 transition-all duration-200;
+}
+
+.luci-tab:hover {
+    @apply text-white;
+}
+
+.luci-tab.active {
+    @apply bg-white bg-opacity-10 text-white;
+}
+
+
+#mainmenu {
+    @apply h-full overflow-y-auto overflow-x-hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#mainmenu::-webkit-scrollbar {
+    display: none;
+}
+
+#mainmenu .nav {
+    @apply p-3 space-y-2;
+    padding-top: 1.5rem;
+}
+
+/* Accordion-style menu items*/
+#mainmenu .nav > li {
+    @apply relative overflow-hidden;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+#maincontent {
+    @apply min-h-screen pt-20 px-8 pb-8;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Main Content Cards */
+.main {
+    @apply mb-6 rounded-2xl p-8 transition-all duration-300;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.main:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+}
+
+/* CBI Form Sections */
+.cbi-section {
+    @apply rounded-2xl p-6 mb-6 transition-all duration-300;
+    background: rgba(34, 35, 53, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+}
+
+.cbi-section:hover {
+    @apply -translate-y-px;
+    box-shadow: 0 8px 28px 0 rgba(31, 38, 135, 0.4);
+}
+
+.cbi-section-head {
+    @apply pb-4 mb-6;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cbi-section-head h3 {
+    @apply text-xl font-semibold text-white m-0;
+}
+
+/* Form Values */
+.cbi-value {
+    @apply grid gap-6 mb-6 p-4 rounded-xl items-center transition-all duration-200;
+    grid-template-columns: 1fr 2fr;
+    background: rgba(55, 65, 81, 0.3);
+}
+
+.cbi-value:hover {
+    background: rgba(55, 65, 81, 0.5);
+}
+
+.cbi-value-title {
+    @apply font-medium text-gray-300 text-sm m-0;
+}
+
+.cbi-value-field {
+    @apply flex items-center gap-2;
+}
+
+/* Form Inputs */
+.cbi-value input[type="text"],
+.cbi-value input[type="password"],
+.cbi-value input[type="number"],
+.cbi-value select,
+.cbi-value textarea {
+    @apply w-full px-4 py-3 rounded-lg border text-white text-sm transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+}
+
+.cbi-value input:focus,
+.cbi-value select:focus,
+.cbi-value textarea:focus {
+    @apply outline-none;
+    border-color: #0099cc;
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.1);
+    background: rgba(34, 35, 53, 0.9);
+}
+
+/* Buttons */
+.cbi-button,
+.btn,
+input[type="submit"],
+input[type="button"] {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer;
+}
+
+.cbi-button-positive,
+.btn-primary,
+input[type="submit"] {
+    @apply text-white;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+.cbi-button-positive:hover,
+.btn-primary:hover,
+input[type="submit"]:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
+}
+
+.cbi-button-neutral,
+.btn-secondary {
+    @apply text-gray-200 border;
+    background: rgba(55, 65, 81, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cbi-button-negative,
+.btn-danger {
+    @apply text-white;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Tables */
+table.table {
+    @apply w-full my-4 rounded-xl overflow-hidden;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+}
+
+table.table thead {
+    background: rgba(55, 65, 81, 0.8);
+}
+
+table.table th {
+    @apply px-6 py-4 text-gray-300 font-semibold text-sm uppercase tracking-wider;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+table.table td {
+    @apply px-6 py-4 text-gray-200 text-sm;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+table.table tr:hover {
+    background: rgba(55, 65, 81, 0.3);
+}
+
+/* ifacebox */
+.ifacebox {
+    @apply block relative overflow-hidden rounded-2xl p-6 transition-all duration-300 border-2 border-transparent shadow-xl bg-gradient-to-br from-indigo-400/15 to-indigo-700/10 backdrop-blur-lg;
+    margin: 0.5rem 0 !important;
+    width: auto !important;
+    height: auto;
+    background-clip: padding-box;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.ifacebox .ifacebox-body:nth-of-type(2) {
+    @apply flex flex-col items-center justify-center text-center;
+}
+
+.ifacebox .ifacebox-head:nth-of-type(3) {
+    display: none !important;
+}
+
+.ifacebox .ifacebox-body:nth-of-type(4) {
+    display: none !important;
+}
+
+.ifacebox .ifacebox-body span::after {
+    content: attr(title);
+}
+
+/* Refresh Button */
+[data-indicator="poll-status"] {
+    @apply relative flex items-center justify-center w-10 h-10 rounded-xl cursor-pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(34, 35, 53, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+[data-indicator="poll-status"]:hover {
+    @apply bg-white/10;
+}
+
+[data-indicator="poll-status"][data-style="active"] {
+    @apply border border-blue-500/30;
+    background: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+}
+
+[data-indicator="poll-status"][data-style="active"] svg {
+    @apply text-blue-400 animate-spin;
+    animation-duration: 2s;
+}
+
+[data-indicator="poll-status"][data-style="inactive"] {
+    @apply border border-gray-500/20;
+    background: rgba(115, 115, 115, 0.2);
+}
+
+[data-indicator="poll-status"][data-style="inactive"] svg {
+    color: rgba(163, 163, 163, 0.8);
+}
+
+[data-indicator="poll-status"][data-style] + span {
+    @apply hidden;
+}
+
+/* CPU/RAM monitor */
+#monitor .flex {
+    @apply items-center gap-4 text-xs;
+}
+
+#monitor .flex > div {
+    @apply items-center gap-1;
+}
+
+/* System processes buttons */
+.td.center.nowrap.cbi-section-actions {
+    @apply whitespace-nowrap;
+}
+
+.td.center.nowrap.cbi-section-actions > div {
+    @apply flex gap-1 justify-center;
+}
+
+.td.center.nowrap.cbi-section-actions .btn,
+.td.center.nowrap.cbi-section-actions .cbi-button {
+    @apply px-2 py-1.5 text-xs whitespace-nowrap;
+    min-width: auto;
+}
+
+.cbi-button-action {
+    @apply bg-blue-600 text-white;
+}
+
+.cbi-button-action:hover {
+    @apply bg-blue-700;
+}
+
+.cbi-button-negative {
+    @apply bg-red-600 text-white;
+}
+
+.cbi-button-negative:hover {
+    @apply bg-red-700;
+}
+
+/* Hide User Menu */
+.header .relative.group,
+header .relative.group,
+button[onclick="toggleUserMenu()"],
+#userMenu {
+    @apply hidden;
+}
+
+/* Sidebar and sidebar menu style */
+.sidebar-orion {
+    @apply w-64 h-screen fixed left-0 top-2 z-40 transition-all duration-300 ease-out;
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(34, 35, 53, 0.95));
+    backdrop-filter: blur(32px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-toggle {
+    @apply absolute -right-3 top-6 z-50 w-6 h-6 bg-gray-800 rounded-full border border-neutral-600 items-center justify-center cursor-pointer transition-all duration-200 hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle:hover {
+    @apply bg-gray-700 border-neutral-500;
+    transform: scale(1.1);
+}
+
+.sidebar-toggle svg {
+    @apply w-3 h-3 text-neutral-300 transition-transform duration-200;
+}
+
+#sidebar.sidebar-orion {
+    @apply block visible opacity-100 fixed left-0 bottom-0 w-64 z-30;
+    top: 4rem;
+    background: rgba(34, 35, 53, 0.9);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#mainmenu .nav > li > a.menu,
+#mainmenu .nav > li > a.food {
+    @apply flex items-center px-4 py-3.5 text-neutral-300 transition-all duration-200 rounded-xl relative;
+    font-weight: 500;
+    font-size: 0.95rem;
+    min-height: 52px;
+    position: relative;
+    background: transparent;
+    border: 1px solid transparent;
+    transform: translateX(0);
+}
+
+#mainmenu .nav > li:not(.active) > a.menu:not(.active),
+#mainmenu .nav > li:not(.active) > a.food:not(.active) {
+    background: transparent;
+    color: rgba(209, 213, 219, 0.8);
+    border-color: transparent;
+    transform: translateX(0);
+    box-shadow: none;
+}
+
+.sidebar-orion.collapsed #mainmenu .nav > li > a.menu,
+.sidebar-orion.collapsed #mainmenu .nav > li > a.food {
+    @apply justify-center px-2;
+    min-width: 48px;
+}
+
+.sidebar-orion.collapsed #mainmenu .nav > li > a.menu span,
+.sidebar-orion.collapsed #mainmenu .nav > li > a.food span {
+    @apply hidden;
+}
+
+#mainmenu .nav > li > a.menu:hover,
+#mainmenu .nav > li > a.food:hover {
+    @apply text-white;
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.2);
+    transform: translateX(2px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#mainmenu .nav > li > a.menu.active,
+#mainmenu .nav > li > a.food.active {
+    @apply text-white;
+    background: linear-gradient(135deg, rgb(99, 102, 241), rgb(79, 70, 229));
+    border-color: rgb(99, 102, 241);
+    transform: translateX(4px);
+    box-shadow: 0 0 24px rgba(99, 102, 241, 0.4),
+    0 4px 16px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: fadeInScale 0.3s ease-out;
+}
+
+#mainmenu .nav > li > a.menu:not(.active),
+#mainmenu .nav > li > a.food:not(.active) {
+    transition: all 0.2s ease;
+}
+
+#mainmenu .nav > li > a::before {
+    content: '';
+    @apply w-5 h-5 mr-3 opacity-90 bg-center bg-no-repeat bg-contain flex-shrink-0;
+    display: inline-block;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-orion.collapsed #mainmenu .nav > li > a::before {
+    @apply mr-0;
+}
+
+#mainmenu .nav > li > a[data-title*="Status"]::before,
+#mainmenu .nav > li > a[data-title*="System_Info"]::before {
+    background-image: url('resources/icons/sidebar-icon/status.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="System"]::before {
+    background-image: url('resources/icons/sidebar-icon/system.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="Network"]::before {
+    background-image: url('resources/icons/sidebar-icon/network.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="Services"]::before {
+    background-image: url('resources/icons/sidebar-icon/services.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="VPN"]::before {
+    background-image: url('resources/icons/sidebar-icon/vpn.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="NAS"]::before {
+    background-image: url('resources/icons/sidebar-icon/nas.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="Docker"]::before {
+    background-image: url('resources/icons/sidebar-icon/docker.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="Applications"]::before,
+#mainmenu .nav > li > a[data-title*="App"]::before {
+    background-image: url('resources/icons/sidebar-icon/app.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a[data-title*="iStore"]::before {
+    background-image: url('resources/icons/sidebar-icon/istore.svg');
+    filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
+}
+
+#mainmenu .nav > li > a.menu.active::before,
+#mainmenu .nav > li > a.food.active::before {
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+#mainmenu .nav > li.slide {
+    @apply overflow-hidden;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu {
+    @apply hidden m-0 p-0 list-none relative z-10 overflow-hidden;
+    background: rgba(15, 23, 42, 0.9);
+    border-radius: 0 0 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#mainmenu .nav > li.slide.active > ul.slide-menu,
+#mainmenu .nav > li.slide > ul.slide-menu.active {
+    @apply block;
+    padding: 8px 0;
+    animation: slideDownSmooth 0.25s ease-out forwards;
+}
+
+.sidebar-orion.collapsed #mainmenu .nav > li.slide > ul.slide-menu {
+    @apply hidden;
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu > li {
+    @apply m-0 p-0 list-none;
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu > li > a.food {
+    @apply flex items-center relative;
+    padding: 10px 20px;
+    margin: 2px 8px;
+    color: rgba(209, 213, 219, 0.8);
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu > li > a.food:hover {
+    @apply text-white;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateX(4px);
+    border-left-color: rgba(99, 102, 241, 0.3);
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu > li > a.food.active {
+    @apply text-violet-300 font-medium;
+    background: rgba(99, 102, 241, 0.2);
+    border-left-color: rgb(99, 102, 241);
+}
+
+#mainmenu .nav > li.slide > ul.slide-menu > li.active > a.food {
+    @apply text-violet-300;
+    background: rgba(99, 102, 241, 0.15);
+    border-left-color: rgb(99, 102, 241);
+}
+
+#mainmenu .nav > li.slide > a.menu::after {
+    content: '';
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 flex-shrink-0;
+    background-size: 16px;
+    opacity: 0.6;
+    background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23D1D5DB'><path stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /></svg>") no-repeat center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-orion.collapsed #mainmenu .nav > li.slide > a.menu::after {
+    @apply hidden;
+}
+
+#mainmenu .nav > li.slide.active > a.menu::after {
+    transform: translateY(-50%) rotate(180deg);
+    opacity: 1;
+}
+
+.sidebar-brand {
+    @apply p-6 border-b flex items-center;
+    border-color: rgba(115, 115, 115, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(34, 35, 53, 0.3));
+    transition: all 0.3s ease;
+}
+
+.sidebar-orion.collapsed .sidebar-brand {
+    @apply justify-center px-3;
+}
+
+.sidebar-brand img {
+    @apply w-8 h-8 flex-shrink-0;
+}
+
+.sidebar-brand h1 {
+    @apply text-white font-bold text-lg ml-3 transition-opacity duration-300;
+    font-family: 'Inter-Bold', system-ui, sans-serif;
+}
+
+.sidebar-orion.collapsed .sidebar-brand h1 {
+    @apply opacity-0 w-0 ml-0;
+}
+
+.sidebar-footer {
+    @apply absolute bottom-0 left-0 right-0 p-4 border-t transition-all duration-300;
+    border-color: rgba(115, 115, 115, 0.3);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(34, 35, 53, 0.9));
+}
+
+.sidebar-overlay {
+    @apply fixed inset-0 bg-black/60 z-30 lg:hidden transition-opacity duration-300;
+    backdrop-filter: blur(8px);
+}
+
+.sidebar-icon {
+    @apply w-5 h-5 mr-3 opacity-80;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.sidebar-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.sidebar-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+/* progressbar */
+.cbi-progressbar {
+    @apply relative w-full min-w-[120px] h-5 rounded-xl bg-gray-800/40 shadow border border-white/10 text-white text-sm font-medium text-center leading-5 tracking-wide mb-1 mt-1 overflow-hidden;
+}
+
+.cbi-progressbar > div {
+    @apply absolute left-0 top-0 h-full rounded-xl bg-gradient-to-r from-blue-400 to-blue-700 shadow transition-all duration-500 z-[1];
+}
+
+.cbi-progressbar > div[style*="width:100%"] {
+    @apply bg-gradient-to-r from-green-500 to-green-700;
+}
+
+.cbi-progressbar::after {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white text-sm font-medium pointer-events-none whitespace-nowrap;
+    content: attr(title);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* MultiWAN card */
+.alert-message {
+    @apply flex items-center p-4 rounded-lg font-medium gap-3 text-base leading-6;
+}
+.warning {
+    @apply bg-warning-100 text-warning-700 border-l-4 border-warning-400;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar-orion,
+    #sidebar.sidebar-orion {
+        transform: translateX(-100%);
+        transition: transform 300ms ease-in-out;
+    }
+
+    /* Ensure sidebar is properly hidden when -translate-x-full is applied */
+    .sidebar-orion.-translate-x-full,
+    #sidebar.sidebar-orion.-translate-x-full {
+        visibility: hidden;
+        transform: translateX(-100%);
+    }
+
+    /* Show sidebar when translate-x-0 is applied */
+    .sidebar-orion.translate-x-0,
+    #sidebar.sidebar-orion.translate-x-0 {
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    .sidebar-orion.translate-x-0 #mainmenu {
+        display: block;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    #maincontent {
+        margin-left: 0;
+        padding: 4rem 1rem 1rem;
+    }
+
+    .cbi-value {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .ifacebox {
+        min-width: calc(50% - 0.25rem);
+        @apply m-0.5;
+    }
+
+    .cbi-button,
+    .btn {
+        @apply px-3 py-2 text-sm;
+        min-width: auto;
+    }
+
+    .cbi-section-actions {
+        @apply flex flex-wrap gap-1;
+    }
+
+    .cbi-section-actions .btn,
+    .cbi-section-actions .cbi-button {
+        @apply flex-1 px-2 py-1.5 text-xs;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ifacebox {
+        @apply min-w-full;
+        margin: 0.125rem 0;
+    }
+
+    .cbi-section-actions .btn,
+    .cbi-section-actions .cbi-button {
+        @apply px-2 py-1 text-xs;
+    }
+}
