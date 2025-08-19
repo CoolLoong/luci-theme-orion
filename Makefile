@@ -95,12 +95,7 @@ define Package/$(PKG_NAME)/install
 	if [ -d $(PKG_BUILD_DIR)/root ]; then \
 		$(CP) -a $(PKG_BUILD_DIR)/root/* $(1)/ 2>/dev/null || true; \
 	fi
-	
-	if [ -f $(PKG_BUILD_DIR)/root/www/index.html ]; then \
-		$(INSTALL_DIR) $(1)/www; \
-		$(INSTALL_DATA) $(PKG_BUILD_DIR)/root/www/index.html $(1)/www/index.html; \
-	fi
-	
+
 	@echo "$(LUCI_TITLE) installation completed"
 endef
 
