@@ -1203,6 +1203,68 @@ body[class*="admin-status-routes"] #view ul {
     display: none !important;
 }
 
+/* Tab Menu System */
+.cbi-tabmenu {
+    @apply flex gap-1 bg-gray-700 rounded-2xl p-1 mb-6 list-none;
+    margin: 0;
+    padding: 4px;
+    background: rgba(55, 65, 81, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.2);
+}
+
+.cbi-tab,
+.cbi-tab-disabled {
+    @apply rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 cursor-pointer;
+    list-style: none;
+    position: relative;
+}
+
+.cbi-tab a,
+.cbi-tab-disabled a {
+    @apply text-neutral-400 no-underline transition-colors duration-200;
+    display: block;
+}
+
+.cbi-tab:hover a {
+    @apply text-white;
+}
+
+.cbi-tab.active {
+    @apply bg-white bg-opacity-10 text-white;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(79, 70, 229, 0.3));
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.cbi-tab.active a {
+    @apply text-white font-semibold;
+}
+
+.cbi-tab-disabled {
+    @apply opacity-60 cursor-not-allowed;
+}
+
+.cbi-tab-disabled:hover a {
+    @apply text-neutral-400;
+}
+
+/* Tab Content */
+.cbi-tabcontent {
+    @apply rounded-2xl p-6 transition-all duration-300;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    display: none;
+}
+
+.cbi-tabcontent.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
 /* System Log Page Styling(/cgi-bin/luci/admin/status/logs) */
 #content_syslog {
     @apply rounded-2xl p-6 mt-2;
@@ -1395,6 +1457,17 @@ body[class*="admin-status-routes"] #view ul {
         min-width: 60px;
     }
 
+    /* Tab menu responsive */
+    .cbi-tabmenu {
+        @apply flex-wrap gap-1;
+    }
+    
+    .cbi-tab,
+    .cbi-tab-disabled {
+        @apply flex-1 text-center px-2 py-2 text-xs;
+        min-width: calc(50% - 2px);
+    }
+
     /* Mobile responsive tables */
     .cbi-section {
         @apply overflow-x-auto;
@@ -1459,6 +1532,17 @@ body[class*="admin-status-routes"] #view ul {
     .cbi-section-actions .btn,
     .cbi-section-actions .cbi-button {
         @apply px-2 py-1 text-xs;
+    }
+
+    /* Tab menu mobile */
+    .cbi-tabmenu {
+        @apply flex-col gap-1;
+    }
+    
+    .cbi-tab,
+    .cbi-tab-disabled {
+        @apply w-full text-center;
+        min-width: auto;
     }
 
     /* Enhanced mobile table handling */
