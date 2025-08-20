@@ -126,7 +126,6 @@
             this.initializeNavigation();
             this.initializeForms();
             this.initializeProgress();
-            this.initializeTooltips();
 
             this.onReady(() => {
                 const navLinks = document.querySelectorAll('#mainmenu a, .luci-tabs a');
@@ -433,53 +432,6 @@
             }, 200);
             this.timers.add(interval);
         }
-
-        initializeTooltips() {
-            const elements = document.querySelectorAll('[title], [data-tooltip]');
-            elements.forEach(el => {
-                const text = el.getAttribute('data-tooltip') || el.getAttribute('title');
-                if (text) {
-                    el.removeAttribute('title');
-                    this.createTooltip(el, text);
-                }
-            });
-        }
-
-        createTooltip(element, text) {
-            let tooltip = null;
-
-            const show = () => {
-                tooltip = document.createElement('div');
-                tooltip.className = 'fixed z-50 px-2 py-1 text-sm text-white bg-dark-800 rounded shadow-lg pointer-events-none';
-                tooltip.textContent = text;
-                document.body.appendChild(tooltip);
-                const updatePosition = () => {
-                    const rect = element.getBoundingClientRect();
-                    const tipRect = tooltip.getBoundingClientRect();
-                    let left = rect.left + (rect.width - tipRect.width) / 2;
-                    let top = rect.top - tipRect.height - 8;
-                    if (left < 8) left = 8;
-                    if (left + tipRect.width > window.innerWidth) left = window.innerWidth - tipRect.width - 8;
-                    if (top < 0) top = rect.bottom + 8;
-                    tooltip.style.left = left + 'px';
-                    tooltip.style.top = top + 'px';
-                };
-                updatePosition();
-            };
-
-            const hide = () => {
-                if (tooltip) {
-                    tooltip.remove();
-                    tooltip = null;
-                }
-            };
-
-            element.addEventListener('mouseenter', show);
-            element.addEventListener('mouseleave', hide);
-            element.addEventListener('focus', show);
-            element.addEventListener('blur', hide);
-        }
-
 
         bindEvents() {
             this.addEventListenerWithCleanup(window, 'resize', () => this.handleResize());

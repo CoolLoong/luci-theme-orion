@@ -437,6 +437,8 @@
     @apply min-h-screen pt-20 px-8 pb-8;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
 /* Main Content Cards */
@@ -460,6 +462,8 @@
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 .cbi-section:hover {
@@ -554,11 +558,14 @@ input[type="submit"]:hover {
 
 /* Tables */
 table.table {
-    @apply w-full my-4 rounded-xl overflow-hidden;
+    @apply w-full my-4 rounded-xl;
     background: rgba(34, 35, 53, 0.8);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+    table-layout: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 table.table thead {
@@ -998,12 +1005,334 @@ button[onclick="toggleUserMenu()"],
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* MultiWAN card */
+/* Alert message text styling */
 .alert-message {
     @apply flex items-center p-4 rounded-lg font-medium gap-3 text-base leading-6;
 }
 .warning {
     @apply bg-warning-100 text-warning-700 border-l-4 border-warning-400;
+}
+
+.alert-message h1,
+.alert-message h2,
+.alert-message h3,
+.alert-message h4,
+.alert-message h5,
+.alert-message h6 {
+    @apply text-gray-800 font-bold;
+    color: #1f2937 !important;
+}
+
+.alert-message p {
+    @apply text-gray-700;
+    color: #374151 !important;
+}
+
+/* mwan3 card style */
+#mwan3-service-status {
+    @apply flex flex-wrap items-center justify-center text-center gap-2;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+@media (max-width: 768px) {
+    #mwan3-service-status {
+        @apply flex-col;
+    }
+}
+
+/* NFT Firewall Styling(/cgi-bin/luci/admin/status/nftables) */
+.nft-table {
+    @apply mb-8;
+}
+
+.nft-table > h3 {
+    @apply text-2xl font-bold text-white mb-6 pb-3;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.1));
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+}
+
+.nft-chains {
+    @apply space-y-6;
+}
+
+.nft-chain {
+    @apply rounded-2xl;
+    background: rgba(34, 35, 53, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+}
+
+.nft-chain h4 {
+    @apply text-lg font-semibold text-white px-6 py-4 mb-0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.2));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nft-chain-hook {
+    @apply px-6 py-4;
+    background: rgba(55, 65, 81, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nft-chain-hook ul {
+    @apply list-none m-0 p-0 space-y-2;
+}
+
+.nft-chain-hook li {
+    @apply text-sm text-gray-300 flex items-center gap-2;
+}
+
+.nft-chain-hook strong {
+    @apply text-white font-medium px-2 py-1 rounded;
+    background: rgba(99, 102, 241, 0.3);
+}
+
+.nft-rules.table {
+    @apply m-0 rounded-none;
+    border: none;
+    background: transparent;
+}
+
+.nft-rules.table th {
+    @apply bg-gray-700 text-gray-300 font-medium text-sm px-4 py-3;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nft-rules.table td {
+    @apply px-4 py-3 text-sm border-b border-gray-800;
+    background: rgba(55, 65, 81, 0.2);
+}
+
+.nft-rules.table tr:hover td {
+    background: rgba(55, 65, 81, 0.4);
+}
+
+/* NFT specific badges and tooltips */
+.ifacebadge {
+    @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-medium mr-1 mb-1;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+}
+
+.ifacebadge:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+.ifacebadge strong {
+    @apply font-bold text-white;
+}
+
+.ifacebadge var {
+    @apply font-normal italic text-gray-300;
+}
+
+.ifacebadge em {
+    @apply font-normal italic text-gray-400;
+}
+
+.ifacebadge a {
+    @apply text-blue-300 hover:text-blue-200 no-underline;
+}
+
+.nft-comment {
+    @apply bg-yellow-500/20 border-yellow-500/40 text-yellow-200;
+}
+
+.nft-counter {
+    @apply bg-green-500/20 border-green-500/40 text-green-200;
+}
+
+.nft-set {
+    @apply inline-block;
+}
+
+.nft-set-items {
+    display: none !important
+}
+
+/* Hide curly braces in nft-set while keeping other content */
+.nft-set {
+    font-size: 0;
+}
+
+.nft-set > * {
+    font-size: inherit;
+}
+
+.nft-set-items,
+.cbi-tooltip {
+    font-size: 0.75rem;
+}
+
+/* Center empty table message */
+.nft-rules.table .td.center {
+    @apply text-center text-gray-400 italic py-6;
+}
+
+/* Tooltip styling */
+.cbi-tooltip-container {
+    @apply relative;
+    cursor: default !important;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    @apply absolute px-3 py-2 text-xs text-white rounded-lg shadow-xl pointer-events-none;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(8px);
+    margin-bottom: 8px;
+    z-index: 10000;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: max-content;
+}
+
+/* Hide specific elements on routes page and adjust margin(/cgi-bin/luci/admin/status/routes) */
+body[class*="admin-status-routes"] #view h2{
+    @apply mb-2
+}
+
+body[class*="admin-status-routes"] #view p,
+body[class*="admin-status-routes"] #view ul {
+    display: none !important;
+}
+
+/* System Log Page Styling(/cgi-bin/luci/admin/status/logs) */
+#content_syslog {
+    @apply rounded-2xl p-6 mt-2;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+#content_syslog > div:first-child,
+#content_syslog > div:nth-child(2) {
+    @apply flex flex-wrap items-center gap-3 p-4 mb-4 rounded-xl;
+    background: rgba(55, 65, 81, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#content_syslog label {
+    @apply text-gray-300 font-medium text-sm;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-checkbox {
+    @apply w-4 h-4 rounded border border-gray-400 bg-gray-700 text-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-select,
+#content_syslog .cbi-input-text {
+    @apply px-3 py-2 rounded-lg text-white text-sm border transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+    margin: 0 !important;
+    min-width: 120px;
+}
+
+#content_syslog .cbi-input-select:focus,
+#content_syslog .cbi-input-text:focus {
+    @apply outline-none;
+    border-color: #0099cc;
+    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2);
+    background: rgba(34, 35, 53, 0.9);
+}
+
+#logTextFilter {
+    min-width: 200px !important;
+    flex-grow: 1;
+}
+
+/* Scroll buttons container */
+#content_syslog > div:nth-child(3),
+#content_syslog > div:last-child {
+    @apply flex justify-center mb-4;
+}
+
+#scrollDownButton,
+#scrollUpButton {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+#scrollDownButton:hover,
+#scrollUpButton:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
+}
+
+/* System log textarea */
+#syslog {
+    @apply w-full rounded-xl p-4 text-sm font-mono leading-relaxed;
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    resize: vertical;
+    min-height: 400px;
+    max-height: 80vh;
+    height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+}
+
+#syslog::-webkit-scrollbar {
+    width: 8px;
+}
+
+#syslog::-webkit-scrollbar-track {
+    background: rgba(34, 35, 53, 0.3);
+    border-radius: 4px;
+}
+
+#syslog::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.6);
+    border-radius: 4px;
+}
+
+#syslog::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.8);
+}
+
+/* Log level styling within textarea */
+#syslog {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Responsive adjustments for system log */
+@media (max-width: 768px) {
+    #content_syslog > div:first-child,
+    #content_syslog > div:nth-child(2) {
+        @apply flex-col items-start gap-2;
+    }
+    
+    #content_syslog .cbi-input-select,
+    #content_syslog .cbi-input-text {
+        @apply w-full;
+        min-width: auto !important;
+    }
+    
+    #logTextFilter {
+        min-width: auto !important;
+    }
+    
+    #syslog {
+        height: 50vh;
+        min-height: 300px;
+    }
 }
 
 /* Responsive Design */
@@ -1065,6 +1394,60 @@ button[onclick="toggleUserMenu()"],
         @apply flex-1 px-2 py-1.5 text-xs;
         min-width: 60px;
     }
+
+    /* Mobile responsive tables */
+    .cbi-section {
+        @apply overflow-x-auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+    }
+
+    .cbi-section table,
+    table.table {
+        @apply min-w-full;
+        width: max-content;
+        max-width: none;
+        white-space: nowrap;
+    }
+
+    .cbi-section::-webkit-scrollbar {
+        display: none;
+    }
+
+    .cbi-section {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    /* Alternative card layout for very small tables */
+    .cbi-section[data-mobile="card"] table,
+    .cbi-section.mobile-card table {
+        @apply hidden;
+    }
+
+    .cbi-section[data-mobile="card"] .mobile-card-container,
+    .cbi-section.mobile-card .mobile-card-container {
+        @apply block space-y-3;
+    }
+
+    /* Responsive form values */
+    .cbi-value {
+        @apply grid-cols-1 gap-2;
+    }
+
+    .cbi-value-title {
+        @apply font-semibold text-white text-base mb-1;
+    }
+
+    /* Compact section headers */
+    .cbi-section-head {
+        @apply pb-2 mb-4;
+    }
+
+    .cbi-section-head h3 {
+        @apply text-lg;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1076,5 +1459,92 @@ button[onclick="toggleUserMenu()"],
     .cbi-section-actions .btn,
     .cbi-section-actions .cbi-button {
         @apply px-2 py-1 text-xs;
+    }
+
+    /* Enhanced mobile table handling */
+    .cbi-section table,
+    table.table {
+        @apply text-xs;
+        min-width: 100%;
+        width: max-content;
+        table-layout: auto;
+    }
+
+    .cbi-section th,
+    .cbi-section td,
+    table.table th,
+    table.table td {
+        @apply px-1 py-1;
+        min-width: 80px;
+        max-width: 150px;
+        overflow: visible;
+        text-overflow: clip;
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+        line-height: 1.3;
+    }
+
+    .cbi-section td span.ifacebadge {
+        @apply inline-block px-2 py-1 rounded text-xs;
+        background: rgba(99, 102, 241, 0.2);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        max-width: none;
+        white-space: nowrap;
+    }
+
+    /* Table rows should expand with content */
+    .cbi-section tr,
+    table.table tr {
+        height: auto;
+        min-height: 40px;
+    }
+
+    /* Stack table cells vertically for very narrow tables */
+    .cbi-section.stack-mobile table,
+    table.table.stack-mobile {
+        @apply table-auto;
+    }
+
+    .cbi-section.stack-mobile thead,
+    table.table.stack-mobile thead {
+        @apply hidden;
+    }
+
+    .cbi-section.stack-mobile tbody,
+    table.table.stack-mobile tbody {
+        @apply block;
+    }
+
+    .cbi-section.stack-mobile tr,
+    table.table.stack-mobile tr {
+        @apply block mb-4 rounded-lg p-4;
+        background: rgba(55, 65, 81, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cbi-section.stack-mobile td,
+    table.table.stack-mobile td {
+        @apply block text-left border-0 px-0 py-1;
+        min-width: auto;
+    }
+
+    .cbi-section.stack-mobile td:before,
+    table.table.stack-mobile td:before {
+        content: attr(data-label) ": ";
+        @apply font-semibold text-gray-300 mr-2;
+    }
+
+    /* Compact main content */
+    #maincontent {
+        @apply px-4 pt-16;
+    }
+
+    .main {
+        @apply p-4;
+    }
+
+    .cbi-section {
+        @apply p-4;
     }
 }

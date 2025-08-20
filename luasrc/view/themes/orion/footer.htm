@@ -83,7 +83,6 @@ local link_width = string.format("calc(100%% / %d)", num_links)
                 <div class="flex items-center space-x-3">
                     <img src="<%=media%>/resources/brand.png" alt="Orion OS" class="h-8 w-auto">
                     <div class="text-left">
-                        <h4 class="text-white font-semibold">Orion</h4>
                         <p class="text-neutral-400 text-sm">v0.0.1</p>
                     </div>
                 </div>
@@ -169,7 +168,6 @@ local link_width = string.format("calc(100%% / %d)", num_links)
         <% end %>
     </div>
 </nav>
-<!-- Enhanced JavaScript for HeroUI interactions -->
 <script>
     // Mobile Navbar Scroll Behavior
     {
@@ -199,7 +197,6 @@ local link_width = string.format("calc(100%% / %d)", num_links)
         });
     }
 
-    // Enhanced UI Interactions
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
@@ -226,19 +223,6 @@ local link_width = string.format("calc(100%% / %d)", num_links)
             body.classList.remove('overflow-hidden');
         }
     }
-
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function () {
-        // Hide loading after page load
-        setTimeout(hideLoading, 500);
-        // Add smooth scrolling
-        document.documentElement.style.scrollBehavior = 'smooth';
-        
-        // Show page content to prevent FOUC
-        setTimeout(() => {
-            document.body.classList.add('loaded');
-        }, 100);
-    });
 </script>
 <script type="text/javascript">L.require('menu-orion');</script>
 </body>
