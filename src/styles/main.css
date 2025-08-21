@@ -88,7 +88,12 @@
     }
 
     /* LuCI Base Elements */
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         @apply font-sans font-bold text-white;
     }
 
@@ -212,6 +217,7 @@
 }
 
 @layer utilities {
+
     /* Animations */
     @keyframes slideDownSmooth {
         from {
@@ -223,7 +229,7 @@
 
         to {
             opacity: 1;
-            max-height: 400px;
+            max-height: 100%;
             padding-top: 8px;
             padding-bottom: 8px;
         }
@@ -232,12 +238,12 @@
     @keyframes fadeInScale {
         from {
             opacity: 0;
-            transform: translateX(0) scale(0.95);
+            transform: scale(0.95);
         }
 
         to {
             opacity: 1;
-            transform: translateX(4px) scale(1);
+            transform: scale(1);
         }
     }
 
@@ -245,6 +251,7 @@
         0% {
             opacity: 0;
         }
+
         100% {
             opacity: 1;
         }
@@ -255,6 +262,7 @@
             transform: translateY(100%);
             opacity: 0;
         }
+
         100% {
             transform: translateY(0);
             opacity: 1;
@@ -265,6 +273,7 @@
         from {
             transform: rotate(0deg);
         }
+
         to {
             transform: rotate(360deg);
         }
@@ -286,21 +295,9 @@
 
     /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(34, 35, 53, 0.3);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(0, 153, 204, 0.5);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 153, 204, 0.7);
+        display: none;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     /* Text Shadows */
@@ -339,27 +336,6 @@
     @apply border;
     border-color: rgba(255, 255, 255, 0.15);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-/* Navigation Components */
-.navbar-orion {
-    @apply border-b border-gray-600 sticky top-0 z-50;
-    background: rgba(34, 35, 53, 0.8);
-    backdrop-filter: blur(20px);
-}
-
-.nav-item {
-    @apply px-4 py-2 rounded-xl text-neutral-300 transition-all duration-200;
-}
-
-.nav-item:hover {
-    @apply text-white bg-gray-700;
-}
-
-.nav-item.active {
-    @apply text-white;
-    background: linear-gradient(to right, #0099cc, #2563eb);
-    box-shadow: 0 0 20px rgba(9, 12, 196, 0.3);
 }
 
 /* Content Area */
@@ -412,7 +388,7 @@
 
 
 #mainmenu {
-    @apply h-full overflow-y-auto overflow-x-hidden;
+    @apply flex-1 overflow-y-auto overflow-x-hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -423,12 +399,11 @@
 
 #mainmenu .nav {
     @apply p-3 space-y-2;
-    padding-top: 1.5rem;
 }
 
 /* Accordion-style menu items*/
-#mainmenu .nav > li {
-    @apply relative overflow-hidden;
+#mainmenu .nav>li {
+    @apply relative overflow-visible;
     border-radius: 12px;
     transition: all 0.2s ease;
 }
@@ -569,21 +544,19 @@ table.table {
 }
 
 table.table thead {
-    background: rgba(55, 65, 81, 0.8);
+    @apply bg-gray-700/80;
 }
 
 table.table th {
-    @apply px-6 py-4 text-gray-300 font-semibold text-sm uppercase tracking-wider;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    @apply px-6 py-4 text-gray-300 font-semibold text-sm uppercase tracking-wider border-b border-white/10;
 }
 
 table.table td {
-    @apply px-6 py-4 text-gray-200 text-sm;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    @apply px-6 py-4 text-gray-200 text-sm border-b border-white/5;
 }
 
 table.table tr:hover {
-    background: rgba(55, 65, 81, 0.3);
+    @apply bg-gray-700/30;
 }
 
 /* ifacebox */
@@ -646,7 +619,7 @@ table.table tr:hover {
     color: rgba(163, 163, 163, 0.8);
 }
 
-[data-indicator="poll-status"][data-style] + span {
+[data-indicator="poll-status"][data-style]+span {
     @apply hidden;
 }
 
@@ -655,7 +628,7 @@ table.table tr:hover {
     @apply items-center gap-4 text-xs;
 }
 
-#monitor .flex > div {
+#monitor .flex>div {
     @apply items-center gap-1;
 }
 
@@ -664,7 +637,7 @@ table.table tr:hover {
     @apply whitespace-nowrap;
 }
 
-.td.center.nowrap.cbi-section-actions > div {
+.td.center.nowrap.cbi-section-actions>div {
     @apply flex gap-1 justify-center;
 }
 
@@ -700,11 +673,15 @@ button[onclick="toggleUserMenu()"],
 
 /* Sidebar and sidebar menu style */
 .sidebar-orion {
-    @apply w-64 h-screen fixed left-0 top-2 z-40 transition-all duration-300 ease-out;
+    @apply w-64 fixed left-0 top-2 bottom-2 z-40 transition-all duration-300 ease-out;
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(34, 35, 53, 0.95));
     backdrop-filter: blur(32px);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sidebar-toggle {
@@ -729,20 +706,20 @@ button[onclick="toggleUserMenu()"],
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#mainmenu .nav > li > a.menu,
-#mainmenu .nav > li > a.food {
+#mainmenu .nav>li>a.menu,
+#mainmenu .nav>li>a.food {
     @apply flex items-center px-4 py-3.5 text-neutral-300 transition-all duration-200 rounded-xl relative;
     font-weight: 500;
     font-size: 0.95rem;
-    min-height: 52px;
+    min-height: 3.5rem;
     position: relative;
     background: transparent;
     border: 1px solid transparent;
     transform: translateX(0);
 }
 
-#mainmenu .nav > li:not(.active) > a.menu:not(.active),
-#mainmenu .nav > li:not(.active) > a.food:not(.active) {
+#mainmenu .nav>li:not(.active)>a.menu:not(.active),
+#mainmenu .nav>li:not(.active)>a.food:not(.active) {
     background: transparent;
     color: rgba(209, 213, 219, 0.8);
     border-color: transparent;
@@ -750,115 +727,110 @@ button[onclick="toggleUserMenu()"],
     box-shadow: none;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a.menu,
-.sidebar-orion.collapsed #mainmenu .nav > li > a.food {
+.sidebar-orion.collapsed #mainmenu .nav>li>a.menu,
+.sidebar-orion.collapsed #mainmenu .nav>li>a.food {
     @apply justify-center px-2;
     min-width: 48px;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a.menu span,
-.sidebar-orion.collapsed #mainmenu .nav > li > a.food span {
+.sidebar-orion.collapsed #mainmenu .nav>li>a.menu span,
+.sidebar-orion.collapsed #mainmenu .nav>li>a.food span {
     @apply hidden;
 }
 
-#mainmenu .nav > li > a.menu:hover,
-#mainmenu .nav > li > a.food:hover {
+#mainmenu .nav>li>a.menu:hover,
+#mainmenu .nav>li>a.food:hover {
     @apply text-white;
     background: rgba(99, 102, 241, 0.08);
     border-color: rgba(99, 102, 241, 0.2);
-    transform: translateX(2px);
     box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-#mainmenu .nav > li > a.menu.active,
-#mainmenu .nav > li > a.food.active {
+#mainmenu .nav>li>a.menu.active,
+#mainmenu .nav>li>a.food.active {
     @apply text-white;
     background: linear-gradient(135deg, rgb(99, 102, 241), rgb(79, 70, 229));
     border-color: rgb(99, 102, 241);
-    transform: translateX(4px);
     box-shadow: 0 0 24px rgba(99, 102, 241, 0.4),
-    0 4px 16px rgba(99, 102, 241, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 4px 16px rgba(99, 102, 241, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
     animation: fadeInScale 0.3s ease-out;
 }
 
-#mainmenu .nav > li > a.menu:not(.active),
-#mainmenu .nav > li > a.food:not(.active) {
+#mainmenu .nav>li>a.menu:not(.active),
+#mainmenu .nav>li>a.food:not(.active) {
     transition: all 0.2s ease;
 }
 
-#mainmenu .nav > li > a::before {
+#mainmenu .nav>li>a::before {
     content: '';
-    @apply w-5 h-5 mr-3 opacity-90 bg-center bg-no-repeat bg-contain flex-shrink-0;
-    display: inline-block;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply w-5 h-5 mr-3 opacity-90 bg-center bg-no-repeat bg-contain flex-shrink-0 inline-block transition-all duration-300;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a::before {
+.sidebar-orion.collapsed #mainmenu .nav>li>a::before {
     @apply mr-0;
 }
 
-#mainmenu .nav > li > a[data-title*="Status"]::before,
-#mainmenu .nav > li > a[data-title*="System_Info"]::before {
+#mainmenu .nav>li>a[data-title*="Status"]::before,
+#mainmenu .nav>li>a[data-title*="System_Info"]::before {
     background-image: url('resources/icons/sidebar-icon/status.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="System"]::before {
+#mainmenu .nav>li>a[data-title*="System"]::before {
     background-image: url('resources/icons/sidebar-icon/system.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Network"]::before {
+#mainmenu .nav>li>a[data-title*="Network"]::before {
     background-image: url('resources/icons/sidebar-icon/network.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Services"]::before {
+#mainmenu .nav>li>a[data-title*="Services"]::before {
     background-image: url('resources/icons/sidebar-icon/services.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="VPN"]::before {
+#mainmenu .nav>li>a[data-title*="VPN"]::before {
     background-image: url('resources/icons/sidebar-icon/vpn.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="NAS"]::before {
+#mainmenu .nav>li>a[data-title*="NAS"]::before {
     background-image: url('resources/icons/sidebar-icon/nas.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Docker"]::before {
+#mainmenu .nav>li>a[data-title*="Docker"]::before {
     background-image: url('resources/icons/sidebar-icon/docker.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Applications"]::before,
-#mainmenu .nav > li > a[data-title*="App"]::before {
+#mainmenu .nav>li>a[data-title*="Applications"]::before,
+#mainmenu .nav>li>a[data-title*="App"]::before {
     background-image: url('resources/icons/sidebar-icon/app.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="iStore"]::before {
+#mainmenu .nav>li>a[data-title*="iStore"]::before {
     background-image: url('resources/icons/sidebar-icon/istore.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a.menu.active::before,
-#mainmenu .nav > li > a.food.active::before {
+#mainmenu .nav>li>a.menu.active::before,
+#mainmenu .nav>li>a.food.active::before {
     filter: brightness(0) saturate(100%) invert(100%);
 }
 
-#mainmenu .nav > li.slide {
-    @apply overflow-hidden;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+#mainmenu .nav>li.slide {
+    @apply overflow-hidden rounded-xl transition-all duration-300;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu {
-    @apply hidden m-0 p-0 list-none relative z-10 overflow-hidden;
+#mainmenu .nav>li.slide>ul.slide-menu {
+    @apply m-0 p-0 list-none relative z-10 hidden;
     background: rgba(15, 23, 42, 0.9);
     border-radius: 0 0 12px 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -867,22 +839,22 @@ button[onclick="toggleUserMenu()"],
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-#mainmenu .nav > li.slide.active > ul.slide-menu,
-#mainmenu .nav > li.slide > ul.slide-menu.active {
+#mainmenu .nav>li.slide.active>ul.slide-menu,
+#mainmenu .nav>li.slide>ul.slide-menu.active {
     @apply block;
     padding: 8px 0;
     animation: slideDownSmooth 0.25s ease-out forwards;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li.slide > ul.slide-menu {
+.sidebar-orion.collapsed #mainmenu .nav>li.slide>ul.slide-menu {
     @apply hidden;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li {
+#mainmenu .nav>li.slide>ul.slide-menu>li {
     @apply m-0 p-0 list-none;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food {
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food {
     @apply flex items-center relative;
     padding: 10px 20px;
     margin: 2px 8px;
@@ -895,26 +867,26 @@ button[onclick="toggleUserMenu()"],
     border-left: 3px solid transparent;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food:hover {
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food:hover {
     @apply text-white;
     background: rgba(99, 102, 241, 0.1);
     transform: translateX(4px);
     border-left-color: rgba(99, 102, 241, 0.3);
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food.active {
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food.active {
     @apply text-violet-300 font-medium;
     background: rgba(99, 102, 241, 0.2);
     border-left-color: rgb(99, 102, 241);
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li.active > a.food {
+#mainmenu .nav>li.slide>ul.slide-menu>li.active>a.food {
     @apply text-violet-300;
     background: rgba(99, 102, 241, 0.15);
     border-left-color: rgb(99, 102, 241);
 }
 
-#mainmenu .nav > li.slide > a.menu::after {
+#mainmenu .nav>li.slide>a.menu::after {
     content: '';
     @apply absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 flex-shrink-0;
     background-size: 16px;
@@ -923,11 +895,11 @@ button[onclick="toggleUserMenu()"],
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li.slide > a.menu::after {
+.sidebar-orion.collapsed #mainmenu .nav>li.slide>a.menu::after {
     @apply hidden;
 }
 
-#mainmenu .nav > li.slide.active > a.menu::after {
+#mainmenu .nav>li.slide.active>a.menu::after {
     transform: translateY(-50%) rotate(180deg);
     opacity: 1;
 }
@@ -968,22 +940,15 @@ button[onclick="toggleUserMenu()"],
 }
 
 .sidebar-icon {
-    @apply w-5 h-5 mr-3 opacity-80;
-    display: inline-block;
-    flex-shrink: 0;
+    @apply w-5 h-5 mr-3 opacity-80 inline-block flex-shrink-0;
 }
 
 .sidebar-icon svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+    @apply w-full h-full block;
 }
 
 .sidebar-icon img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
+    @apply w-full h-full block object-contain;
 }
 
 /* progressbar */
@@ -991,11 +956,11 @@ button[onclick="toggleUserMenu()"],
     @apply relative w-full min-w-[120px] h-5 rounded-xl bg-gray-800/40 shadow border border-white/10 text-white text-sm font-medium text-center leading-5 tracking-wide mb-1 mt-1 overflow-hidden;
 }
 
-.cbi-progressbar > div {
+.cbi-progressbar>div {
     @apply absolute left-0 top-0 h-full rounded-xl bg-gradient-to-r from-blue-400 to-blue-700 shadow transition-all duration-500 z-[1];
 }
 
-.cbi-progressbar > div[style*="width:100%"] {
+.cbi-progressbar>div[style*="width:100%"] {
     @apply bg-gradient-to-r from-green-500 to-green-700;
 }
 
@@ -1009,6 +974,7 @@ button[onclick="toggleUserMenu()"],
 .alert-message {
     @apply flex items-center p-4 rounded-lg font-medium gap-3 text-base leading-6;
 }
+
 .warning {
     @apply bg-warning-100 text-warning-700 border-l-4 border-warning-400;
 }
@@ -1030,10 +996,9 @@ button[onclick="toggleUserMenu()"],
 
 /* mwan3 card style */
 #mwan3-service-status {
-    @apply flex flex-wrap items-center justify-center text-center gap-2;
-    margin: 0 auto;
-    max-width: 1200px;
+    @apply flex flex-wrap items-center justify-center text-center gap-2 mx-auto max-w-screen-xl;
 }
+
 @media (max-width: 768px) {
     #mwan3-service-status {
         @apply flex-col;
@@ -1045,7 +1010,7 @@ button[onclick="toggleUserMenu()"],
     @apply mb-8;
 }
 
-.nft-table > h3 {
+.nft-table>h3 {
     @apply text-2xl font-bold text-white mb-6 pb-3;
     border-bottom: 2px solid rgba(99, 102, 241, 0.3);
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.1));
@@ -1161,13 +1126,13 @@ button[onclick="toggleUserMenu()"],
     font-size: 0;
 }
 
-.nft-set > * {
-    font-size: inherit;
+.nft-set>* {
+    @apply text-inherit;
 }
 
 .nft-set-items,
 .cbi-tooltip {
-    font-size: 0.75rem;
+    @apply text-xs;
 }
 
 /* Center empty table message */
@@ -1194,7 +1159,7 @@ button[onclick="toggleUserMenu()"],
 }
 
 /* Hide specific elements on routes page and adjust margin(/cgi-bin/luci/admin/status/routes) */
-body[class*="admin-status-routes"] #view h2{
+body[class*="admin-status-routes"] #view h2 {
     @apply mb-2
 }
 
@@ -1264,6 +1229,16 @@ body[class*="admin-status-routes"] #view ul {
     animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Tab content controlled by data-tab-active attribute */
+[data-tab-active="false"] {
+    display: none !important;
+}
+
+[data-tab-active="true"] {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
 
 /* System Log Page Styling(/cgi-bin/luci/admin/status/logs) */
 #content_syslog {
@@ -1274,8 +1249,8 @@ body[class*="admin-status-routes"] #view ul {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-#content_syslog > div:first-child,
-#content_syslog > div:nth-child(2) {
+#content_syslog>div:first-child,
+#content_syslog>div:nth-child(2) {
     @apply flex flex-wrap items-center gap-3 p-4 mb-4 rounded-xl;
     background: rgba(55, 65, 81, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1314,8 +1289,8 @@ body[class*="admin-status-routes"] #view ul {
 }
 
 /* Scroll buttons container */
-#content_syslog > div:nth-child(3),
-#content_syslog > div:last-child {
+#content_syslog>div:nth-child(3),
+#content_syslog>div:last-child {
     @apply flex justify-center mb-4;
 }
 
@@ -1374,31 +1349,13 @@ body[class*="admin-status-routes"] #view ul {
     word-wrap: break-word;
 }
 
-/* Responsive adjustments for system log */
-@media (max-width: 768px) {
-    #content_syslog > div:first-child,
-    #content_syslog > div:nth-child(2) {
-        @apply flex-col items-start gap-2;
-    }
-    
-    #content_syslog .cbi-input-select,
-    #content_syslog .cbi-input-text {
-        @apply w-full;
-        min-width: auto !important;
-    }
-    
-    #logTextFilter {
-        min-width: auto !important;
-    }
-    
-    #syslog {
-        height: 50vh;
-        min-height: 300px;
-    }
-}
-
 /* Responsive Design */
 @media (max-width: 1024px) {
+    /* sidebar add margin bottom to avoid navbar */
+    .sidebar-orion {
+        @apply mb-[60px]
+    }
+
     .sidebar-orion,
     #sidebar.sidebar-orion {
         transform: translateX(-100%);
@@ -1435,7 +1392,29 @@ body[class*="admin-status-routes"] #view ul {
     }
 }
 
+/* Responsive adjustments for system log */
 @media (max-width: 768px) {
+
+    #content_syslog>div:first-child,
+    #content_syslog>div:nth-child(2) {
+        @apply flex-col items-start gap-2;
+    }
+
+    #content_syslog .cbi-input-select,
+    #content_syslog .cbi-input-text {
+        @apply w-full;
+        min-width: auto !important;
+    }
+
+    #logTextFilter {
+        min-width: auto !important;
+    }
+
+    #syslog {
+        height: 50vh;
+        min-height: 300px;
+    }
+
     .ifacebox {
         min-width: calc(50% - 0.25rem);
         @apply m-0.5;
@@ -1461,7 +1440,7 @@ body[class*="admin-status-routes"] #view ul {
     .cbi-tabmenu {
         @apply flex-wrap gap-1;
     }
-    
+
     .cbi-tab,
     .cbi-tab-disabled {
         @apply flex-1 text-center px-2 py-2 text-xs;
@@ -1538,7 +1517,7 @@ body[class*="admin-status-routes"] #view ul {
     .cbi-tabmenu {
         @apply flex-col gap-1;
     }
-    
+
     .cbi-tab,
     .cbi-tab-disabled {
         @apply w-full text-center;
