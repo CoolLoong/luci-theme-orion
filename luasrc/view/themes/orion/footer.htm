@@ -71,30 +71,26 @@ local link_width = string.format("calc(100%% / %d)", num_links)
     }
     <% end %>
 </style>
-
-</div>
 </div>
 
 <!-- Footer -->
-<footer class="mt-12 pb-6">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="glass-panel rounded-xl p-6 text-center">
-            <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-                <div class="flex items-center space-x-3">
-                    <img src="<%=media%>/resources/brand.png" alt="Orion OS" class="h-8 w-auto">
-                    <div class="text-left">
-                        <p class="text-neutral-400 text-sm">v0.0.1</p>
-                    </div>
+<footer class="mt-8 max-w-full mx-8">
+    <div class="glass-panel rounded-xl text-center p-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+            <div class="flex items-center space-x-3">
+                <img src="<%=media%>/resources/brand.png" alt="Orion OS" class="h-8 w-auto">
+                <div class="text-left">
+                    <p class="text-neutral-400 text-sm">v0.0.1</p>
                 </div>
-                <div class="flex items-center space-x-4 text-sm text-neutral-400">
-                    <span><%=ver.luciname%></span>
-                    <span>·</span>
-                    <a href="https://github.com/CoolLoong/luci-theme-orion"
-                       class="hover:text-primary-400 transition-colors"
-                       target="_blank" rel="noopener">
-                        GitHub
-                    </a>
-                </div>
+            </div>
+            <div class="flex items-center space-x-4 text-sm text-neutral-400">
+                <span><%=ver.luciname%></span>
+                <span>·</span>
+                <a href="https://github.com/CoolLoong/luci-theme-orion"
+                    class="hover:text-primary-400 transition-colors"
+                    target="_blank" rel="noopener">
+                    GitHub
+                </a>
             </div>
         </div>
     </div>

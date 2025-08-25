@@ -126,7 +126,6 @@
             this.initializeNavigation();
             this.initializeForms();
             this.initializeProgress();
-            this.initializeTabs();
 
             this.onReady(() => {
                 const navLinks = document.querySelectorAll('#mainmenu a, .luci-tabs a');
@@ -404,112 +403,6 @@
             forms.forEach(form => {
                 form.addEventListener('submit', () => this.showProgressBar());
             });
-        }
-
-        initializeTabs() {
-            this.onReady(() => {
-                const tabMenus = document.querySelectorAll('.cbi-tabmenu');
-                tabMenus.forEach(menu => this.setupTabMenu(menu));
-            });
-        }
-
-        setupTabMenu(menu) {
-            const tabs = menu.querySelectorAll('.cbi-tab, .cbi-tab-disabled');
-            
-            // Add accessibility attributes
-            menu.setAttribute('role', 'tablist');
-            
-            // Setup each tab
-            tabs.forEach(tab => {
-                const link = tab.querySelector('a');
-                
-                // Make tabs focusable and add ARIA attributes
-                tab.setAttribute('tabindex', tab.classList.contains('cbi-tab-disabled') ? '-1' : '0');
-                tab.setAttribute('role', 'tab');
-                tab.setAttribute('aria-selected', tab.classList.contains('active') ? 'true' : 'false');
-                
-                if (tab.classList.contains('cbi-tab-disabled')) {
-                    tab.setAttribute('aria-disabled', 'true');
-                }
-
-                // Add keyboard navigation for enabled tabs only
-                if (tab.classList.contains('cbi-tab')) {
-                    tab.addEventListener('keydown', (e) => {
-                        const enabledTabs = Array.from(tabs).filter(t => t.classList.contains('cbi-tab'));
-                        const currentIndex = enabledTabs.indexOf(tab);
-                        let targetTab = null;
-                        
-                        switch (e.key) {
-                            case 'ArrowLeft':
-                                e.preventDefault();
-                                targetTab = enabledTabs[currentIndex > 0 ? currentIndex - 1 : enabledTabs.length - 1];
-                                break;
-                            case 'ArrowRight':
-                                e.preventDefault();
-                                targetTab = enabledTabs[currentIndex < enabledTabs.length - 1 ? currentIndex + 1 : 0];
-                                break;
-                            case 'Home':
-                                e.preventDefault();
-                                targetTab = enabledTabs[0];
-                                break;
-                            case 'End':
-                                e.preventDefault();
-                                targetTab = enabledTabs[enabledTabs.length - 1];
-                                break;
-                            case 'Enter':
-                            case ' ':
-                                e.preventDefault();
-                                // Let LuCI handle the navigation naturally
-                                if (link) {
-                                    link.click();
-                                }
-                                break;
-                            default:
-                                return;
-                        }
-                        
-                        if (targetTab) {
-                            targetTab.focus();
-                        }
-                    });
-                }
-            });
-
-            // Find and setup corresponding tab content panels if they exist
-            const tabContents = this.findTabContents(menu);
-            tabContents.forEach(content => {
-                content.setAttribute('role', 'tabpanel');
-                const isActive = content.classList.contains('active') || 
-                                content.style.display !== 'none';
-                content.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-            });
-        }
-
-        findTabContents(menu) {
-            const parent = menu.parentElement;
-            if (!parent) return [];
-
-            // Look for existing tab content containers
-            let contents = Array.from(parent.querySelectorAll('.cbi-tabcontent'));
-            
-            // If no content found, look for sections with matching data-tab attributes
-            if (contents.length === 0) {
-                const tabs = menu.querySelectorAll('.cbi-tab, .cbi-tab-disabled');
-                contents = [];
-                tabs.forEach(tab => {
-                    const tabId = tab.getAttribute('data-tab');
-                    if (tabId) {
-                        const content = parent.querySelector(`#${tabId}`) || 
-                                      parent.querySelector(`[data-tab="${tabId}"]`);
-                        if (content) {
-                            content.classList.add('cbi-tabcontent');
-                            contents.push(content);
-                        }
-                    }
-                });
-            }
-
-            return contents;
         }
 
         showProgressBar() {
