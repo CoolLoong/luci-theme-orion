@@ -1,0 +1,15 @@
+{
+	"admin/system/orion": {
+		"title": "Orion Theme",
+		"order": 60,
+		"action": {
+			"type": "cbi",
+			"path": "orion"
+		},
+		"depends": {
+			"uci": {
+				"orion": {}
+			}
+		}
+	}
+}

@@ -61,34 +61,34 @@
         font-family: 'Inter-Regular', system-ui, sans-serif;
         background: linear-gradient(135deg, #0a0a0a 0%, #222235 50%, #0f172a 100%);
         -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
+        @apply scroll-smooth;
         scrollbar-width: thin;
     }
 
     html::-webkit-scrollbar,
     body::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background: transparent;
+        @apply w-2 h-2 bg-transparent;
     }
 
     html::-webkit-scrollbar-thumb,
     body::-webkit-scrollbar-thumb {
         background: linear-gradient(135deg, #0a0a0a 0%, #222235 50%, #0f172a 100%);
-        border-radius: 8px;
-        border: 2px solid transparent;
+        @apply rounded-lg border-2 border-transparent min-h-5 transition-colors duration-200;
         background-clip: padding-box;
-        min-height: 20px;
-        transition: background 0.2s;
     }
 
     html::-webkit-scrollbar-track,
     body::-webkit-scrollbar-track {
-        background: transparent;
+        @apply bg-transparent;
     }
 
     /* LuCI Base Elements */
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         @apply font-sans font-bold text-white;
     }
 
@@ -155,11 +155,8 @@
     select:focus,
     textarea:focus {
         @apply outline-none;
-        --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-        --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-        box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-        --tw-ring-opacity: 1;
-        --tw-ring-color: rgb(0 153 204 / var(--tw-ring-opacity));
+        border: 2px solid #0099cc !important;
+        box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2) !important;
     }
 
     /* Buttons */
@@ -212,6 +209,7 @@
 }
 
 @layer utilities {
+
     /* Animations */
     @keyframes slideDownSmooth {
         from {
@@ -223,21 +221,19 @@
 
         to {
             opacity: 1;
-            max-height: 400px;
+            max-height: 100%;
             padding-top: 8px;
             padding-bottom: 8px;
         }
     }
 
-    @keyframes fadeInScale {
+    @keyframes scale {
         from {
-            opacity: 0;
-            transform: translateX(0) scale(0.95);
+            transform: scale(0.95);
         }
 
         to {
-            opacity: 1;
-            transform: translateX(4px) scale(1);
+            transform: scale(1);
         }
     }
 
@@ -245,6 +241,7 @@
         0% {
             opacity: 0;
         }
+
         100% {
             opacity: 1;
         }
@@ -255,6 +252,7 @@
             transform: translateY(100%);
             opacity: 0;
         }
+
         100% {
             transform: translateY(0);
             opacity: 1;
@@ -265,6 +263,7 @@
         from {
             transform: rotate(0deg);
         }
+
         to {
             transform: rotate(360deg);
         }
@@ -286,21 +285,9 @@
 
     /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(34, 35, 53, 0.3);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(0, 153, 204, 0.5);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 153, 204, 0.7);
+        @apply hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     /* Text Shadows */
@@ -339,27 +326,6 @@
     @apply border;
     border-color: rgba(255, 255, 255, 0.15);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-/* Navigation Components */
-.navbar-orion {
-    @apply border-b border-gray-600 sticky top-0 z-50;
-    background: rgba(34, 35, 53, 0.8);
-    backdrop-filter: blur(20px);
-}
-
-.nav-item {
-    @apply px-4 py-2 rounded-xl text-neutral-300 transition-all duration-200;
-}
-
-.nav-item:hover {
-    @apply text-white bg-gray-700;
-}
-
-.nav-item.active {
-    @apply text-white;
-    background: linear-gradient(to right, #0099cc, #2563eb);
-    box-shadow: 0 0 20px rgba(9, 12, 196, 0.3);
 }
 
 /* Content Area */
@@ -412,31 +378,29 @@
 
 
 #mainmenu {
-    @apply h-full overflow-y-auto overflow-x-hidden;
+    @apply flex-1 overflow-y-auto overflow-x-hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
 #mainmenu::-webkit-scrollbar {
-    display: none;
+    @apply hidden;
 }
 
 #mainmenu .nav {
     @apply p-3 space-y-2;
-    padding-top: 1.5rem;
 }
 
 /* Accordion-style menu items*/
-#mainmenu .nav > li {
-    @apply relative overflow-hidden;
-    border-radius: 12px;
-    transition: all 0.2s ease;
+#mainmenu .nav>li {
+    @apply relative overflow-visible rounded-xl transition-all duration-200 ease-in-out;
 }
 
 #maincontent {
-    @apply min-h-screen pt-20 px-8 pb-8;
+    @apply mx-8 space-y-6 scroll-smooth overflow-x-hidden;
     -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
+    max-width: 100vw;
+    min-height: 75vh;
 }
 
 /* Main Content Cards */
@@ -460,6 +424,8 @@
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+    overflow-x: auto;
+    max-width: 100%;
 }
 
 .cbi-section:hover {
@@ -481,6 +447,13 @@
     @apply grid gap-6 mb-6 p-4 rounded-xl items-center transition-all duration-200;
     grid-template-columns: 1fr 2fr;
     background: rgba(55, 65, 81, 0.3);
+}
+
+/* Button-only form values should use auto-fit layout */
+.cbi-value#cbi-json-actions-actions,
+.cbi-value#cbi-json-config-editlist,
+.cbi-value#cbi-frpc-common-init {
+    @apply grid-cols-1
 }
 
 .cbi-value:hover {
@@ -506,6 +479,42 @@
     background: rgba(34, 35, 53, 0.8);
 }
 
+/* File Upload Input */
+input[type="file"] {
+    @apply w-full px-4 py-3 rounded-xl text-white text-sm transition-all duration-200 cursor-pointer;
+    background: linear-gradient(135deg, rgba(34, 35, 53, 0.9), rgba(55, 65, 81, 0.8));
+    border: 2px dashed rgba(99, 102, 241, 0.4);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+}
+
+input[type="file"]:hover {
+    border-color: rgba(99, 102, 241, 0.6);
+    background: linear-gradient(135deg, rgba(55, 65, 81, 0.9), rgba(75, 85, 99, 0.8));
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
+    transform: translateY(-1px);
+}
+
+input[type="file"]:focus {
+    @apply outline-none;
+    border-color: #0099cc;
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2), 0 6px 20px rgba(99, 102, 241, 0.25);
+}
+
+/* File upload button styling */
+input[type="file"]::file-selector-button {
+    @apply px-4 py-2 mr-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3);
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: linear-gradient(135deg, #0080b3, #1d4ed8);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.4);
+    transform: translateY(-1px);
+}
+
 .cbi-value input:focus,
 .cbi-value select:focus,
 .cbi-value textarea:focus {
@@ -521,6 +530,7 @@
 input[type="submit"],
 input[type="button"] {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer;
+    @apply bg-neutral-700 text-white hover:bg-neutral-600;
 }
 
 .cbi-button-positive,
@@ -553,30 +563,41 @@ input[type="submit"]:hover {
 }
 
 /* Tables */
-table.table {
-    @apply w-full my-4 rounded-xl overflow-hidden;
+.cbi-section-table {
+    @apply w-full my-4 rounded-xl;
     background: rgba(34, 35, 53, 0.8);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 16px rgba(31, 38, 135, 0.2);
+    table-layout: auto;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
-table.table thead {
-    background: rgba(55, 65, 81, 0.8);
+.cbi-section-table thead {
+    @apply bg-gray-700/80;
 }
 
-table.table th {
-    @apply px-6 py-4 text-gray-300 font-semibold text-sm uppercase tracking-wider;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+.cbi-section-table th {
+    @apply px-6 py-4 text-gray-300 font-semibold text-sm uppercase tracking-wider border-b border-white/10;
+    display: table-cell;
+    vertical-align: middle;
 }
 
-table.table td {
-    @apply px-6 py-4 text-gray-200 text-sm;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.cbi-section-table td {
+    @apply px-6 py-4 text-gray-200 text-sm border-b border-white/5;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.cbi-section-table tr {
+    display: table-row;
+    vertical-align: middle;
 }
 
 table.table tr:hover {
-    background: rgba(55, 65, 81, 0.3);
+    @apply bg-gray-700/30;
 }
 
 /* ifacebox */
@@ -639,7 +660,7 @@ table.table tr:hover {
     color: rgba(163, 163, 163, 0.8);
 }
 
-[data-indicator="poll-status"][data-style] + span {
+[data-indicator="poll-status"][data-style]+span {
     @apply hidden;
 }
 
@@ -648,16 +669,107 @@ table.table tr:hover {
     @apply items-center gap-4 text-xs;
 }
 
-#monitor .flex > div {
+#monitor .flex>div {
     @apply items-center gap-1;
 }
 
-/* System processes buttons */
+/* Dropdown Styles */
+.cbi-dropdown {
+    @apply relative px-4 py-3 rounded-lg border text-white text-sm transition-all duration-200 cursor-pointer;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+    width: auto;
+    min-width: 150px;
+}
+
+/* Default dropdown preview ul - closed state shows only selected items */
+.cbi-dropdown ul.preview,
+.cbi-dropdown ul:not(.dropdown) {
+    @apply flex items-center m-0 list-none;
+    @apply bg-transparent border-none shadow-none;
+    @apply static opacity-100 visible transform-none;
+    min-height: 38px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cbi-dropdown ul.preview li,
+.cbi-dropdown ul:not(.dropdown) li {
+    @apply hidden p-0 m-0;
+}
+
+.cbi-dropdown ul.preview li[selected],
+.cbi-dropdown ul.preview li[display="0"],
+.cbi-dropdown ul.preview li[placeholder]:not([data-value]),
+.cbi-dropdown ul:not(.dropdown) li[selected],
+.cbi-dropdown ul:not(.dropdown) li[display="0"],
+.cbi-dropdown ul:not(.dropdown) li[placeholder]:not([data-value]) {
+    @apply flex items-center text-white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.cbi-dropdown ul.dropdown {
+    @apply absolute bg-neutral-700 border border-neutral-600 rounded-lg mt-1 max-h-60 overflow-y-auto z-50 shadow-lg opacity-100 visible scale-100 transition-all duration-200 origin-top list-none m-0 p-0 block;
+    min-height: auto !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    top: auto !important;
+    left: 0 !important;
+    bottom: 0 !important;
+}
+
+.cbi-dropdown ul.dropdown li {  
+    @apply px-3 py-2 text-white cursor-pointer transition-colors;
+    @apply flex items-center;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+}
+
+.cbi-dropdown ul.dropdown li:hover {
+    @apply bg-primary-600;
+}
+
+.cbi-dropdown ul.dropdown li[placeholder] {
+    @apply text-neutral-400;
+}
+
+.cbi-dropdown ul li em {
+    @apply text-neutral-400;
+}
+
+.cbi-dropdown .open {
+    @apply hidden;
+}
+
+.cbi-dropdown .more {
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 text-neutral-400;
+    @apply pointer-events-none select-none;
+}
+
+.cbi-dropdown .ifacebadge {
+    @apply flex items-center gap-1 text-sm;
+}
+
+.cbi-dropdown .ifacebadge img {
+    @apply w-4 h-4;
+}
+
+.cbi-dropdown .create-item-input {
+    @apply bg-neutral-800 border border-neutral-600 rounded px-2 py-1 text-white;
+    @apply focus:border-primary-500 outline-none;
+}
+
+/* System processes buttons(/cgi-bin/luci/admin/status/processes) */
 .td.center.nowrap.cbi-section-actions {
     @apply whitespace-nowrap;
 }
 
-.td.center.nowrap.cbi-section-actions > div {
+.td.center.nowrap.cbi-section-actions>div {
     @apply flex gap-1 justify-center;
 }
 
@@ -693,7 +805,7 @@ button[onclick="toggleUserMenu()"],
 
 /* Sidebar and sidebar menu style */
 .sidebar-orion {
-    @apply w-64 h-screen fixed left-0 top-2 z-40 transition-all duration-300 ease-out;
+    @apply w-64 fixed left-0 top-2 bottom-2 z-40 transition-all duration-300 ease-out flex flex-col overflow-y-auto overflow-x-hidden;
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(34, 35, 53, 0.95));
     backdrop-filter: blur(32px);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -706,8 +818,7 @@ button[onclick="toggleUserMenu()"],
 }
 
 .sidebar-toggle:hover {
-    @apply bg-gray-700 border-neutral-500;
-    transform: scale(1.1);
+    @apply bg-gray-700 border-neutral-500 scale-110;
 }
 
 .sidebar-toggle svg {
@@ -722,20 +833,20 @@ button[onclick="toggleUserMenu()"],
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#mainmenu .nav > li > a.menu,
-#mainmenu .nav > li > a.food {
+#mainmenu .nav>li>a.menu,
+#mainmenu .nav>li>a.food {
     @apply flex items-center px-4 py-3.5 text-neutral-300 transition-all duration-200 rounded-xl relative;
     font-weight: 500;
     font-size: 0.95rem;
-    min-height: 52px;
+    min-height: 3.5rem;
     position: relative;
     background: transparent;
     border: 1px solid transparent;
     transform: translateX(0);
 }
 
-#mainmenu .nav > li:not(.active) > a.menu:not(.active),
-#mainmenu .nav > li:not(.active) > a.food:not(.active) {
+#mainmenu .nav>li:not(.active)>a.menu:not(.active),
+#mainmenu .nav>li:not(.active)>a.food:not(.active) {
     background: transparent;
     color: rgba(209, 213, 219, 0.8);
     border-color: transparent;
@@ -743,115 +854,110 @@ button[onclick="toggleUserMenu()"],
     box-shadow: none;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a.menu,
-.sidebar-orion.collapsed #mainmenu .nav > li > a.food {
+.sidebar-orion.collapsed #mainmenu .nav>li>a.menu,
+.sidebar-orion.collapsed #mainmenu .nav>li>a.food {
     @apply justify-center px-2;
     min-width: 48px;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a.menu span,
-.sidebar-orion.collapsed #mainmenu .nav > li > a.food span {
+.sidebar-orion.collapsed #mainmenu .nav>li>a.menu span,
+.sidebar-orion.collapsed #mainmenu .nav>li>a.food span {
     @apply hidden;
 }
 
-#mainmenu .nav > li > a.menu:hover,
-#mainmenu .nav > li > a.food:hover {
+#mainmenu .nav>li>a.menu:hover,
+#mainmenu .nav>li>a.food:hover {
     @apply text-white;
     background: rgba(99, 102, 241, 0.08);
     border-color: rgba(99, 102, 241, 0.2);
-    transform: translateX(2px);
     box-shadow: 0 4px 16px rgba(99, 102, 241, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-#mainmenu .nav > li > a.menu.active,
-#mainmenu .nav > li > a.food.active {
+#mainmenu .nav>li>a.menu.active,
+#mainmenu .nav>li>a.food.active {
     @apply text-white;
     background: linear-gradient(135deg, rgb(99, 102, 241), rgb(79, 70, 229));
     border-color: rgb(99, 102, 241);
-    transform: translateX(4px);
     box-shadow: 0 0 24px rgba(99, 102, 241, 0.4),
-    0 4px 16px rgba(99, 102, 241, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    animation: fadeInScale 0.3s ease-out;
+        0 4px 16px rgba(99, 102, 241, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: scale 0.3s ease-out;
 }
 
-#mainmenu .nav > li > a.menu:not(.active),
-#mainmenu .nav > li > a.food:not(.active) {
+#mainmenu .nav>li>a.menu:not(.active),
+#mainmenu .nav>li>a.food:not(.active) {
     transition: all 0.2s ease;
 }
 
-#mainmenu .nav > li > a::before {
+#mainmenu .nav>li>a::before {
     content: '';
-    @apply w-5 h-5 mr-3 opacity-90 bg-center bg-no-repeat bg-contain flex-shrink-0;
-    display: inline-block;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply w-5 h-5 mr-3 opacity-90 bg-center bg-no-repeat bg-contain flex-shrink-0 inline-block transition-all duration-300;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li > a::before {
+.sidebar-orion.collapsed #mainmenu .nav>li>a::before {
     @apply mr-0;
 }
 
-#mainmenu .nav > li > a[data-title*="Status"]::before,
-#mainmenu .nav > li > a[data-title*="System_Info"]::before {
+#mainmenu .nav>li>a[data-title*="Status"]::before,
+#mainmenu .nav>li>a[data-title*="System_Info"]::before {
     background-image: url('resources/icons/sidebar-icon/status.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="System"]::before {
+#mainmenu .nav>li>a[data-title*="System"]::before {
     background-image: url('resources/icons/sidebar-icon/system.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Network"]::before {
+#mainmenu .nav>li>a[data-title*="Network"]::before {
     background-image: url('resources/icons/sidebar-icon/network.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Services"]::before {
+#mainmenu .nav>li>a[data-title*="Services"]::before {
     background-image: url('resources/icons/sidebar-icon/services.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="VPN"]::before {
+#mainmenu .nav>li>a[data-title*="VPN"]::before {
     background-image: url('resources/icons/sidebar-icon/vpn.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="NAS"]::before {
+#mainmenu .nav>li>a[data-title*="NAS"]::before {
     background-image: url('resources/icons/sidebar-icon/nas.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Docker"]::before {
+#mainmenu .nav>li>a[data-title*="Docker"]::before {
     background-image: url('resources/icons/sidebar-icon/docker.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="Applications"]::before,
-#mainmenu .nav > li > a[data-title*="App"]::before {
+#mainmenu .nav>li>a[data-title*="Applications"]::before,
+#mainmenu .nav>li>a[data-title*="App"]::before {
     background-image: url('resources/icons/sidebar-icon/app.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a[data-title*="iStore"]::before {
+#mainmenu .nav>li>a[data-title*="iStore"]::before {
     background-image: url('resources/icons/sidebar-icon/istore.svg');
     filter: brightness(0) saturate(100%) invert(73%) sepia(14%) saturate(287%) hue-rotate(181deg) brightness(91%) contrast(88%);
 }
 
-#mainmenu .nav > li > a.menu.active::before,
-#mainmenu .nav > li > a.food.active::before {
+#mainmenu .nav>li>a.menu.active::before,
+#mainmenu .nav>li>a.food.active::before {
     filter: brightness(0) saturate(100%) invert(100%);
 }
 
-#mainmenu .nav > li.slide {
-    @apply overflow-hidden;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+#mainmenu .nav>li.slide {
+    @apply overflow-hidden rounded-xl transition-all duration-300;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu {
-    @apply hidden m-0 p-0 list-none relative z-10 overflow-hidden;
+#mainmenu .nav>li.slide>ul.slide-menu {
+    @apply m-0 p-0 list-none relative z-10 hidden;
     background: rgba(15, 23, 42, 0.9);
     border-radius: 0 0 12px 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -860,69 +966,58 @@ button[onclick="toggleUserMenu()"],
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-#mainmenu .nav > li.slide.active > ul.slide-menu,
-#mainmenu .nav > li.slide > ul.slide-menu.active {
-    @apply block;
-    padding: 8px 0;
+#mainmenu .nav>li.slide.active>ul.slide-menu,
+#mainmenu .nav>li.slide>ul.slide-menu.active {
+    @apply block py-2;
     animation: slideDownSmooth 0.25s ease-out forwards;
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li.slide > ul.slide-menu {
+.sidebar-orion.collapsed #mainmenu .nav>li.slide>ul.slide-menu {
     @apply hidden;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li {
+#mainmenu .nav>li.slide>ul.slide-menu>li {
     @apply m-0 p-0 list-none;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food {
-    @apply flex items-center relative;
-    padding: 10px 20px;
-    margin: 2px 8px;
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food {
+    @apply flex items-center relative px-5 py-2.5 mx-2 my-0.5 text-sm font-normal no-underline rounded-lg transition-all duration-200 border-l-4 border-l-transparent;
     color: rgba(209, 213, 219, 0.8);
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    border-left: 3px solid transparent;
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food:hover {
-    @apply text-white;
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food:hover {
+    @apply text-white translate-x-1;
     background: rgba(99, 102, 241, 0.1);
-    transform: translateX(4px);
     border-left-color: rgba(99, 102, 241, 0.3);
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li > a.food.active {
+#mainmenu .nav>li.slide>ul.slide-menu>li>a.food.active {
     @apply text-violet-300 font-medium;
     background: rgba(99, 102, 241, 0.2);
     border-left-color: rgb(99, 102, 241);
 }
 
-#mainmenu .nav > li.slide > ul.slide-menu > li.active > a.food {
+#mainmenu .nav>li.slide>ul.slide-menu>li.active>a.food {
     @apply text-violet-300;
     background: rgba(99, 102, 241, 0.15);
     border-left-color: rgb(99, 102, 241);
 }
 
-#mainmenu .nav > li.slide > a.menu::after {
+#mainmenu .nav>li.slide>a.menu::after {
     content: '';
-    @apply absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 flex-shrink-0;
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 flex-shrink-0 opacity-60 transition-all duration-300;
     background-size: 16px;
-    opacity: 0.6;
     background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%23D1D5DB'><path stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /></svg>") no-repeat center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-orion.collapsed #mainmenu .nav > li.slide > a.menu::after {
+.sidebar-orion.collapsed #mainmenu .nav>li.slide>a.menu::after {
     @apply hidden;
 }
 
-#mainmenu .nav > li.slide.active > a.menu::after {
+#mainmenu .nav>li.slide.active>a.menu::after {
+    @apply opacity-100;
     transform: translateY(-50%) rotate(180deg);
-    opacity: 1;
 }
 
 .sidebar-brand {
@@ -961,22 +1056,15 @@ button[onclick="toggleUserMenu()"],
 }
 
 .sidebar-icon {
-    @apply w-5 h-5 mr-3 opacity-80;
-    display: inline-block;
-    flex-shrink: 0;
+    @apply w-5 h-5 mr-3 opacity-80 inline-block flex-shrink-0;
 }
 
 .sidebar-icon svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+    @apply w-full h-full block;
 }
 
 .sidebar-icon img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
+    @apply w-full h-full block object-contain;
 }
 
 /* progressbar */
@@ -984,11 +1072,11 @@ button[onclick="toggleUserMenu()"],
     @apply relative w-full min-w-[120px] h-5 rounded-xl bg-gray-800/40 shadow border border-white/10 text-white text-sm font-medium text-center leading-5 tracking-wide mb-1 mt-1 overflow-hidden;
 }
 
-.cbi-progressbar > div {
+.cbi-progressbar>div {
     @apply absolute left-0 top-0 h-full rounded-xl bg-gradient-to-r from-blue-400 to-blue-700 shadow transition-all duration-500 z-[1];
 }
 
-.cbi-progressbar > div[style*="width:100%"] {
+.cbi-progressbar>div[style*="width:100%"] {
     @apply bg-gradient-to-r from-green-500 to-green-700;
 }
 
@@ -998,53 +1086,729 @@ button[onclick="toggleUserMenu()"],
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* MultiWAN card */
+/* Alert message text styling */
 .alert-message {
     @apply flex items-center p-4 rounded-lg font-medium gap-3 text-base leading-6;
 }
+
 .warning {
     @apply bg-warning-100 text-warning-700 border-l-4 border-warning-400;
 }
 
+.alert-message h1,
+.alert-message h2,
+.alert-message h3,
+.alert-message h4,
+.alert-message h5,
+.alert-message h6 {
+    @apply text-gray-800 font-bold;
+    color: #1f2937 !important;
+}
+
+.alert-message p {
+    @apply text-gray-700;
+    color: #374151 !important;
+}
+
+/* mwan3 card style */
+#mwan3-service-status {
+    @apply flex flex-wrap items-center justify-center text-center gap-2 mx-auto max-w-screen-xl;
+}
+
+@media (max-width: 768px) {
+    #mwan3-service-status {
+        @apply flex-col;
+    }
+}
+
+/* NFT Firewall Styling(/cgi-bin/luci/admin/status/nftables) */
+.nft-table {
+    @apply mb-8;
+}
+
+.nft-table>h3 {
+    @apply text-2xl font-bold text-white mb-6 pb-3;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.1));
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+}
+
+.nft-chains {
+    @apply space-y-6;
+}
+
+.nft-chain {
+    @apply rounded-2xl;
+    background: rgba(34, 35, 53, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+}
+
+.nft-chain h4 {
+    @apply text-lg font-semibold text-white px-6 py-4 mb-0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(79, 70, 229, 0.2));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nft-chain-hook {
+    @apply px-6 py-4;
+    background: rgba(55, 65, 81, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nft-chain-hook ul {
+    @apply list-none m-0 p-0 space-y-2;
+}
+
+.nft-chain-hook li {
+    @apply text-sm text-gray-300 flex items-center gap-2;
+}
+
+.nft-chain-hook strong {
+    @apply text-white font-medium px-2 py-1 rounded;
+    background: rgba(99, 102, 241, 0.3);
+}
+
+.nft-rules.table {
+    @apply m-0 rounded-none;
+    border: none;
+    background: transparent;
+}
+
+.nft-rules.table th {
+    @apply bg-gray-700 text-gray-300 font-medium text-sm px-4 py-3;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nft-rules.table td {
+    @apply px-4 py-3 text-sm border-b border-gray-800;
+    background: rgba(55, 65, 81, 0.2);
+}
+
+.nft-rules.table tr:hover td {
+    background: rgba(55, 65, 81, 0.4);
+}
+
+/* NFT specific badges and tooltips */
+.ifacebadge {
+    @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-medium mr-1 mb-1;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+}
+
+.ifacebadge:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+.ifacebadge strong {
+    @apply font-bold text-white;
+}
+
+.ifacebadge var {
+    @apply font-normal italic text-gray-300;
+}
+
+.ifacebadge em {
+    @apply font-normal italic text-gray-400;
+}
+
+.ifacebadge a {
+    @apply text-blue-300 hover:text-blue-200 no-underline;
+}
+
+.nft-comment {
+    @apply bg-yellow-500/20 border-yellow-500/40 text-yellow-200;
+}
+
+.nft-counter {
+    @apply bg-green-500/20 border-green-500/40 text-green-200;
+}
+
+.nft-set {
+    @apply inline-block;
+}
+
+.nft-set-items {
+    display: none !important
+}
+
+/* Hide curly braces in nft-set while keeping other content */
+.nft-set {
+    font-size: 0;
+}
+
+.nft-set>* {
+    @apply text-inherit;
+}
+
+.nft-set-items,
+.cbi-tooltip {
+    @apply text-xs;
+}
+
+/* Center empty table message */
+.nft-rules.table .td.center {
+    @apply text-center text-gray-400 italic py-6;
+}
+
+/* Tooltip styling */
+.cbi-tooltip-container {
+    @apply relative;
+    cursor: default !important;
+}
+
+[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    @apply absolute px-3 py-2 text-xs text-white rounded-lg shadow-xl pointer-events-none;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(8px);
+    margin-bottom: 8px;
+    z-index: 10000;
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: max-content;
+}
+
+/* Hide specific elements on routes page and adjust margin(/cgi-bin/luci/admin/status/routes) */
+body[class*="admin-status-routes"] #view h2 {
+    @apply mb-2
+}
+
+body[class*="admin-status-routes"] #view p,
+body[class*="admin-status-routes"] #view ul {
+    display: none !important;
+}
+
+/* Tab Menu System */
+.cbi-tabmenu {
+    @apply flex gap-1 rounded-2xl mb-6 mt-2 list-none m-0 p-1;
+    background: rgba(55, 65, 81, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.2);
+}
+
+.cbi-tab,
+.cbi-tab-disabled {
+    @apply rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 cursor-pointer list-none relative;
+}
+
+.cbi-tab a,
+.cbi-tab-disabled a {
+    @apply text-neutral-400 no-underline transition-colors duration-200 block;
+}
+
+.cbi-tab:hover a {
+    @apply text-white;
+}
+
+.cbi-tab {
+    @apply bg-white bg-opacity-10 text-white;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(79, 70, 229, 0.3));
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.cbi-tab a {
+    @apply text-white font-semibold;
+}
+
+.cbi-tab-disabled {
+    @apply opacity-70;
+}
+
+.cbi-tab-disabled:hover a {
+    @apply text-neutral-400;
+}
+
+/* Tab Content */
+.cbi-tabcontent {
+    @apply rounded-2xl p-6 transition-all duration-300 hidden;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.cbi-tabcontent.active {
+    @apply block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Tab content controlled by data-tab-active attribute */
+[data-tab-active="false"] {
+    display: none !important;
+}
+
+[data-tab-active="true"] {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* describe information */
+.cbi-map-descr {
+    @apply my-4
+}
+
+.cbi-value-description {
+    @apply ml-1
+}
+
+/* Style dropdown to look like a regular button */
+.cbi-dropdown.cbi-button-apply {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer text-white;
+    background: linear-gradient(135deg, #0099cc, #2563eb) !important;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
+    min-width: auto !important;
+}
+
+.cbi-dropdown.cbi-button-apply:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4) !important;
+}
+
+/* Hide dropdown arrows */
+.cbi-dropdown.cbi-button-apply .more,
+.cbi-dropdown.cbi-button-apply .open {
+    display: none !important;
+}
+
+/* Show selected option as button text, hide dropdown menu */
+.cbi-dropdown.cbi-button-apply ul {
+    position: static !important;
+    display: inline !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+}
+
+.cbi-dropdown.cbi-button-apply ul li {
+    display: none !important;
+}
+
+/* Only show the selected option */
+.cbi-dropdown.cbi-button-apply ul li[selected] {
+    display: inline !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    border-radius: 0 !important;
+    cursor: inherit !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-align: inherit !important;
+    line-height: inherit !important;
+    vertical-align: baseline !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+}
+
+/* save button */
+.cbi-button-save {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer text-white;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.cbi-button-save:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* reset button */
+.cbi-button-reset {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer text-white;
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+.cbi-button-reset:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Fix control-group layout - input and button should be inline */
+.control-group {
+    @apply flex items-center gap-2;
+}
+
+/* Special case: allow wrapping for time sync buttons(/cgi-bin/luci/admin/system/system) */
+.cbi-value-field .control-group {
+    @apply flex-wrap;
+}
+
+/* Hide CBI form hidden elements container */
+form>div:first-child:has(input[type="hidden"][name="token"]) {
+    @apply hidden;
+}
+
+.control-group input {
+    @apply flex-1;
+}
+
+.control-group .btn,
+.control-group .cbi-button {
+    @apply flex-shrink-0;
+}
+
+/* Pagination Buttons Styling(/cgi-bin/luci/admin/system/package-manager) */
+.pager {
+    @apply flex items-center justify-center gap-4 py-4;
+}
+
+.pager .text {
+    @apply text-neutral-300 text-sm font-medium flex-1 text-center;
+}
+
+.pager .btn.prev,
+.pager .btn.next {
+    @apply px-3 py-2 text-center;
+}
+
+/* Service Action Buttons (/cgi-bin/luci/admin/system/startup) */
+.btn+.cbi-button-action {
+    @apply ml-2;
+}
+
+.cbi-button-positive {
+    @apply text-white;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.cbi-button-positive:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+}
+
+div[data-tab="init"] .cbi-button-action {
+    @apply text-white;
+    background: linear-gradient(135deg, #0099cc, #2563eb) !important;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(2) {
+    background: linear-gradient(135deg, #0099cc, #2563eb) !important;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(3) {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(4) {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(5) {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(3):hover {
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(4):hover {
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4) !important;
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(5):hover {
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Checkbox Styling */
+.cbi-checkbox {
+    @apply relative inline-flex items-center;
+}
+
+.cbi-checkbox input[type="checkbox"] {
+    @apply sr-only;
+}
+
+.cbi-checkbox label {
+    @apply relative flex items-center justify-center w-5 h-5 rounded border-2 transition-all duration-200 cursor-pointer;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(34, 35, 53, 0.8);
+}
+
+.cbi-checkbox label:hover {
+    border-color: rgba(0, 153, 204, 0.5);
+    background: rgba(0, 153, 204, 0.1);
+}
+
+.cbi-checkbox input[type="checkbox"]:checked+label {
+    @apply border-blue-500;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3);
+}
+
+.cbi-checkbox input[type="checkbox"]:checked+label:after {
+    content: '✓';
+    @apply absolute text-white text-xs font-bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cbi-checkbox input[type="checkbox"]:focus+label {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
+}
+
+/* System Log Page Styling(/cgi-bin/luci/admin/status/logs) */
+#content_syslog {
+    @apply rounded-2xl p-6 mt-2;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+#content_syslog>div:first-child,
+#content_syslog>div:nth-child(2) {
+    @apply flex flex-wrap items-center gap-3 p-4 mb-4 rounded-xl;
+    background: rgba(55, 65, 81, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#content_syslog label {
+    @apply text-gray-300 font-medium text-sm;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-checkbox {
+    @apply w-4 h-4 rounded border border-gray-400 bg-gray-700 text-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-select,
+#content_syslog .cbi-input-text {
+    @apply px-3 py-2 rounded-lg text-white text-sm border transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+    margin: 0 !important;
+    min-width: 120px;
+}
+
+#content_syslog .cbi-input-select:focus,
+#content_syslog .cbi-input-text:focus {
+    @apply outline-none;
+    border-color: #0099cc;
+    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2);
+    background: rgba(34, 35, 53, 0.9);
+}
+
+#logTextFilter {
+    min-width: 200px !important;
+    flex-grow: 1;
+}
+
+/* Scroll buttons container */
+#content_syslog>div:nth-child(3),
+#content_syslog>div:last-child {
+    @apply flex justify-center mb-4;
+}
+
+#scrollDownButton,
+#scrollUpButton {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-200 text-white border-none;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+#scrollDownButton:hover,
+#scrollUpButton:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
+}
+
+/* System log textarea */
+#syslog {
+    @apply w-full rounded-xl p-4 text-sm font-mono leading-relaxed resize-none overflow-visible;
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: auto;
+    max-height: none;
+    height: auto;
+}
+
+
+/* Log level styling within textarea */
+#syslog {
+    @apply whitespace-pre-wrap;
+    word-wrap: break-word;
+}
+
+/* open list (/cgi-bin/luci/admin/system/flash) */
+[data-page="admin-system-flash"] #modal_overlay {
+    @apply flex items-center justify-end;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal {
+    @apply mx-5 mt-5;
+    width: 80vw;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal h4 {
+    @apply text-xl font-bold text-white mb-4 px-8 pt-8 pb-0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px 16px 0 0;
+    margin: 0;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal p {
+    @apply text-neutral-300 leading-relaxed mb-6 px-8 text-sm;
+    font-family: 'Inter-Regular', system-ui, sans-serif;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal ul {
+    @apply list-none mx-8 mb-6 p-0 space-y-2 max-h-60 overflow-y-auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal ul::-webkit-scrollbar {
+    @apply w-2;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal ul::-webkit-scrollbar-track {
+    @apply bg-gray-800/50 rounded-lg;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal ul::-webkit-scrollbar-thumb {
+    @apply bg-indigo-500/50 rounded-lg hover:bg-indigo-500/70;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal li {
+    @apply px-4 py-3 rounded-lg text-sm text-gray-200 font-mono transition-colors duration-200;
+    background: rgba(55, 65, 81, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    word-break: break-all;
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal li:hover {
+    @apply text-white;
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal .right {
+    @apply flex justify-end gap-3 px-8 pb-8 pt-4;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal .btn {
+    @apply px-6 py-3 rounded-lg text-sm font-medium transition-all duration-200 border-0 cursor-pointer text-white;
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+}
+
+[data-page="admin-system-flash"] #modal_overlay .modal .btn:hover {
+    @apply -translate-y-0.5;
+    background: linear-gradient(135deg, #4b5563, #374151);
+    box-shadow: 0 6px 16px rgba(107, 114, 128, 0.4);
+}
+
+/* TTYD Styles */
+[data-page="admin-system-ttyd-ttyd"] #view iframe {
+    min-height: 75vh !important;
+    border-radius: 0px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
+
+    /* sidebar add margin bottom to avoid navbar */
+    .sidebar-orion {
+        @apply mb-[60px]
+    }
+
     .sidebar-orion,
     #sidebar.sidebar-orion {
         transform: translateX(-100%);
-        transition: transform 300ms ease-in-out;
-    }
-
-    /* Ensure sidebar is properly hidden when -translate-x-full is applied */
-    .sidebar-orion.-translate-x-full,
-    #sidebar.sidebar-orion.-translate-x-full {
-        visibility: hidden;
-        transform: translateX(-100%);
+        @apply transition-transform duration-300 ease-in-out;
     }
 
     /* Show sidebar when translate-x-0 is applied */
     .sidebar-orion.translate-x-0,
     #sidebar.sidebar-orion.translate-x-0 {
-        visibility: visible;
         transform: translateX(0);
     }
 
     .sidebar-orion.translate-x-0 #mainmenu {
-        display: block;
-        visibility: visible;
-        opacity: 1;
+        @apply block visible opacity-100;
     }
 
     #maincontent {
-        margin-left: 0;
-        padding: 4rem 1rem 1rem;
+        @apply mx-0 pt-16 px-4 pb-4;
     }
 
     .cbi-value {
-        grid-template-columns: 1fr;
+        @apply grid-cols-1;
     }
 }
 
+/* Responsive adjustments for system log */
 @media (max-width: 768px) {
+
+    #content_syslog>div:first-child,
+    #content_syslog>div:nth-child(2) {
+        @apply flex-col items-start gap-2;
+    }
+
+    #content_syslog .cbi-input-select,
+    #content_syslog .cbi-input-text {
+        @apply w-full;
+        min-width: auto !important;
+    }
+
+    #logTextFilter {
+        min-width: auto !important;
+    }
+
+    #syslog {
+        @apply h-auto min-h-0;
+    }
+
     .ifacebox {
         min-width: calc(50% - 0.25rem);
         @apply m-0.5;
@@ -1052,8 +1816,7 @@ button[onclick="toggleUserMenu()"],
 
     .cbi-button,
     .btn {
-        @apply px-3 py-2 text-sm;
-        min-width: auto;
+        @apply px-3 py-2 text-sm min-w-0;
     }
 
     .cbi-section-actions {
@@ -1062,19 +1825,169 @@ button[onclick="toggleUserMenu()"],
 
     .cbi-section-actions .btn,
     .cbi-section-actions .cbi-button {
-        @apply flex-1 px-2 py-1.5 text-xs;
-        min-width: 60px;
+        @apply flex-1 px-2 py-1.5 text-xs min-w-[60px];
+    }
+
+    /* Tab menu responsive */
+    .cbi-tabmenu {
+        @apply flex-wrap gap-1;
+    }
+
+    .cbi-tab,
+    .cbi-tab-disabled {
+        @apply flex-1 text-center px-2 py-2 text-xs;
+        min-width: calc(50% - 2px);
+    }
+
+    /* Mobile responsive tables */
+    .cbi-section {
+        @apply overflow-x-auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+    }
+
+    .cbi-section table,
+    table.table {
+        @apply min-w-full max-w-none whitespace-nowrap;
+        width: max-content;
+    }
+
+    .cbi-section::-webkit-scrollbar {
+        @apply hidden;
+    }
+
+    .cbi-section {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    /* Alternative card layout for very small tables */
+    .cbi-section[data-mobile="card"] table,
+    .cbi-section.mobile-card table {
+        @apply hidden;
+    }
+
+    .cbi-section[data-mobile="card"] .mobile-card-container,
+    .cbi-section.mobile-card .mobile-card-container {
+        @apply block space-y-3;
+    }
+
+    /* Responsive form values */
+    .cbi-value {
+        @apply grid-cols-1 gap-2;
+    }
+
+    .cbi-value-title {
+        @apply font-semibold text-white text-base mb-1;
+    }
+
+    /* Compact section headers */
+    .cbi-section-head {
+        @apply pb-2 mb-4;
+    }
+
+    .cbi-section-head h3 {
+        @apply text-lg;
     }
 }
 
 @media (max-width: 480px) {
     .ifacebox {
-        @apply min-w-full;
-        margin: 0.125rem 0;
+        @apply min-w-full my-0.5;
     }
 
     .cbi-section-actions .btn,
     .cbi-section-actions .cbi-button {
         @apply px-2 py-1 text-xs;
+    }
+
+    /* Tab menu mobile */
+    .cbi-tabmenu {
+        @apply flex-col gap-1;
+    }
+
+    .cbi-tab,
+    .cbi-tab-disabled {
+        @apply w-full text-center;
+        min-width: auto;
+    }
+
+    /* Enhanced mobile table handling */
+    .cbi-section table,
+    table.table {
+        @apply text-xs min-w-full table-auto;
+        width: max-content;
+    }
+
+    .cbi-section th,
+    .cbi-section td,
+    table.table th,
+    table.table td {
+        @apply px-1 py-1 overflow-visible whitespace-normal break-all;
+        min-width: 80px;
+        max-width: 150px;
+        text-overflow: clip;
+        word-wrap: break-word;
+        line-height: 1.3;
+    }
+
+    .cbi-section td span.ifacebadge {
+        @apply inline-block px-2 py-1 rounded text-xs max-w-none whitespace-nowrap;
+        background: rgba(99, 102, 241, 0.2);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    /* Table rows should expand with content */
+    .cbi-section tr,
+    table.table tr {
+        @apply h-auto min-h-10;
+    }
+
+    /* Stack table cells vertically for very narrow tables */
+    .cbi-section.stack-mobile table,
+    table.table.stack-mobile {
+        @apply table-auto;
+    }
+
+    .cbi-section.stack-mobile thead,
+    table.table.stack-mobile thead {
+        @apply hidden;
+    }
+
+    .cbi-section.stack-mobile tbody,
+    table.table.stack-mobile tbody {
+        @apply block;
+    }
+
+    .cbi-section.stack-mobile tr,
+    table.table.stack-mobile tr {
+        @apply block mb-4 rounded-lg p-4;
+        background: rgba(55, 65, 81, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .cbi-section.stack-mobile td,
+    table.table.stack-mobile td {
+        @apply block text-left border-0 px-0 py-1 min-w-0;
+    }
+
+    .cbi-section.stack-mobile td:before,
+    table.table.stack-mobile td:before {
+        content: attr(data-label) ": ";
+        @apply font-semibold text-gray-300 mr-2;
+    }
+
+    /* Compact main content */
+    #maincontent {
+        @apply px-4 pt-16;
+    }
+
+    .main {
+        @apply p-4;
+    }
+
+    .cbi-section {
+        @apply p-4;
     }
 }
