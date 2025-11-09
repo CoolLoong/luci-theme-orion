@@ -149,7 +149,6 @@
                     });
                 });
 
-                // Auto-hide loading overlay after page load
                 this.addEventListenerWithCleanup(window, 'load', () => {
                     const loadingOverlay = document.getElementById('loadingOverlay');
                     if (loadingOverlay) {
@@ -159,7 +158,6 @@
                     }
                 });
 
-                // Close dropdowns when clicking outside
                 this.addEventListenerWithCleanup(document, 'click', (e) => {
                     const userMenu = document.getElementById('userMenu');
                     if (userMenu && !userMenu.contains(e.target) && !e.target.closest('[data-action="toggle-user-menu"]')) {
@@ -731,33 +729,28 @@
         }
 
         destroy() {
-            // Clean up event listeners
             this.eventListeners.forEach(({target, event, handler, options}) => {
                 target.removeEventListener(event, handler, options);
             });
             this.eventListeners = [];
             this.components.clear();
 
-            // Clean up PerformanceObserver
             if (this.performanceObserver) {
                 this.performanceObserver.disconnect();
                 this.performanceObserver = null;
             }
 
-            // Clean up MediaQuery listener
             if (this.mediaQueryListener) {
                 this.mediaQueryListener.mq.removeEventListener('change', this.mediaQueryListener.handleChange);
                 this.mediaQueryListener = null;
             }
 
-            // Clean up all timers
             this.timers.forEach(timer => {
                 clearTimeout(timer);
                 clearInterval(timer);
             });
             this.timers.clear();
 
-            // Clean up DOM elements
             if (this.toastContainer && this.toastContainer.parentNode) {
                 this.toastContainer.parentNode.removeChild(this.toastContainer);
                 this.toastContainer = null;
@@ -770,7 +763,6 @@
             this.modals.clear();
             this.currentModal = null;
 
-            // Clean up loading overlays
             this.hideAllLoading();
             this.activeLoaders.clear();
 

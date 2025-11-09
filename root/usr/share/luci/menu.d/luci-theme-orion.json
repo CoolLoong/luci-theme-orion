@@ -3,8 +3,8 @@
 		"title": "Orion Theme",
 		"order": 60,
 		"action": {
-			"type": "cbi",
-			"path": "orion"
+			"type": "view",
+			"path": "orion/config"
 		},
 		"depends": {
 			"uci": {

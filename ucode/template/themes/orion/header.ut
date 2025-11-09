@@ -1,0 +1,138 @@
+{%
+	import { getuid, getspnam } from 'luci.core';
+
+	const boardinfo = ubus.call('system', 'board');
+	const node = dispatcher.context.dispatched;
+	const path = join('-', ctx.request_path);
+
+	http.prepare_content('text/html; charset=UTF-8');
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+<head>
+	<meta charset="utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#09c">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="msapplication-TileColor" content="#09c">
+	<meta name="application-name" content="{{ striptags(boardinfo.hostname ?? '?') }} - LuCI">
+	<meta name="apple-mobile-web-app-title" content="{{ striptags(boardinfo.hostname ?? '?') }} - LuCI">
+	<link rel="stylesheet" href="{{ media }}/orion.css">
+	<link rel="shortcut icon" href="{{ media }}/resources/favicon.ico">
+	{% if (node?.css): %}
+	<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+	{% endif %}
+	<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
+	<script src="{{ resource }}/cbi.js"></script>
+	<script src="{{ media }}/resources/js/orion.js"></script>
+	<title>{{ striptags(`${boardinfo.hostname ?? '?'}${node ? ` - ${node.title}` : ''}`) }} - LuCI</title>
+	{% if (css): %}
+	<style title="text/css">{{ css }}</style>
+	{% endif %}
+</head>
+
+<body class="min-h-screen bg-dark font-inter antialiased overflow-x-hidden lang_{{ dispatcher.lang }} {% if (ctx.authsession) %}logged-in{% endif %} {% if (path != '') %}node-{{ entityencode(path, true) }}{% else %}node-main-login{% endif %}" data-page="{{ entityencode(path, true) }}" style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/dashboard.png') center/cover fixed;">
+
+<!-- Main Header -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-heavy border-b border-white/10 animate-fade-in">
+	<div class="max-w-full h-16">
+		<div class="flex items-center justify-between h-full px-6 lg:px-8">
+			<!-- Logo Section -->
+			<div class="flex items-center space-x-4">
+				<a id="logo" href="{% if (ctx.authsession) %}{{ dispatcher.build_url('admin/status/overview') }}{% else %}#{% endif %}"
+				   class="flex items-center space-x-3 group transition-all duration-300 hover:scale-105">
+					<div class="relative">
+						<img src="{{ media }}/resources/images/brand.png" alt="OpenWrt" class="h-8 w-auto transition-all duration-300 group-hover:brightness-110">
+						<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+					</div>
+					<div class="hidden sm:block">
+						<p class="text-xs text-neutral-400">OpenWrt Management</p>
+					</div>
+				</a>
+			</div>
+
+			<div class="hidden lg:flex items-center space-x-3">
+				<div id="monitor" class="flex items-center space-x-2"></div>
+			</div>
+
+			<div class="flex items-center space-x-3">
+				<div class="status" id="indicators"></div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Main App Layout -->
+<div class="flex min-h-screen pt-16">
+	<!-- Loading Overlay -->
+	<div id="loadingOverlay" class="fixed inset-0 z-40 flex items-center justify-center glass-heavy opacity-0 transition-all duration-500">
+		<div class="text-center">
+			<div class="relative mb-4">
+				<div class="w-12 h-12 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto"></div>
+			</div>
+			<p class="text-white font-medium animate-pulse">Loading...</p>
+		</div>
+	</div>
+
+	<!-- Sidebar Navigation -->
+	<aside class="sidebar-orion -translate-x-full lg:translate-x-0 custom-scrollbar" id="sidebar">
+		<nav class="p-4 space-y-2" id="mainmenu">
+			<!-- Navigation items will be populated by LuCI -->
+		</nav>
+	</aside>
+
+	<!-- Mobile Menu Overlay -->
+	<div id="sidebarOverlay" class="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm opacity-0 invisible lg:hidden transition-all duration-300" onclick="toggleSidebar()"></div>
+
+	<!-- Main Content Area -->
+	<main class="flex-1 lg:ml-64 transition-all duration-300">
+		<!-- Top Navigation Tabs -->
+		<div class="bg-dark-light/50 border-b border-white/10" id="tabmenu-container" style="display:none">
+			<div class="px-6 py-3">
+				<nav class="flex space-x-1" id="tabmenu">
+					<!-- Tabs will be populated by LuCI -->
+				</nav>
+			</div>
+		</div>
+
+		<!-- Mode Menu for Mobile -->
+		<div class="lg:hidden bg-dark-light/30 border-b border-white/10" id="modemenu-container" style="display:none">
+			<div class="p-4">
+				<div class="flex flex-wrap gap-2" id="modemenu">
+					<!-- Mode menu items will be populated by LuCI -->
+				</div>
+			</div>
+		</div>
+
+		<!-- Page Content -->
+		<div class="flex-1" id="maincontent">
+			{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
+				<div class="alert-message warning">
+					<h4>{{ _('No password set!') }}</h4>
+					<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface.') }}</p>
+					{% if (dispatcher.lookup("admin/system/admin")): %}
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{% if (boardinfo.rootfs_type == "initramfs"): %}
+				<div class="alert-message warning">
+					<h4>{{ _('System running in recovery (initramfs) mode.') }}</h4>
+					<p>{{ _('No changes to settings will be stored and are lost after rebooting. This mode should only be used to install a firmware upgrade') }}</p>
+					{% if (dispatcher.lookup("admin/system/flash")): %}
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/flash") }}">{{ _('Go to firmware upgrade...') }}</a></div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			<!-- LuCI Content will be inserted here -->
+			<noscript>
+				<div class="alert-message warning">
+					<h4>{{ _('JavaScript required!') }}</h4>
+					<p>{{ _('You must enable JavaScript in your browser or LuCI will not work properly.') }}</p>
+				</div>
+			</noscript>

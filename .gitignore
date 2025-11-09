@@ -2,9 +2,13 @@
 node_modules/
 package-lock.json
 yarn.lock
+bun.lockb
 
-# Build outputs
+# Build outputs - 所有构建生成的文件
 htdocs/luci-static/orion/orion.css
+htdocs/luci-static/orion/main.css
+htdocs/luci-static/orion/resources/
+htdocs/luci-static/resources/
 
 # Production templates
 template/*.prod
@@ -49,6 +53,7 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+.dev/.env
 
 # IDE files
 .idea/

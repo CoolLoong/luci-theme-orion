@@ -1,0 +1,198 @@
+{%
+	const uci = require('uci').cursor();
+	const config = uci.get_all('orion', 'theme') ?? {};
+
+	// Table to store navbar icons
+	const icons = {};
+
+	// Get all navbar sections
+	const navbars = uci.get('orion', '@navbar') ?? [];
+	for (let section in navbars) {
+		const address = navbars[section].address;
+		const icon_url = navbars[section].icon;
+
+		if (address && icon_url) {
+			icons[address] = replace(icon_url, /^\/www\/luci-static\/orion\//, '');
+		}
+	}
+
+	// Check navbar enable status
+	const navbar_enabled = config.navbar == '1';
+
+	// Calculate number of enabled navbar items
+	let num_links = 0;
+	for (let section in navbars) {
+		if (navbars[section].enable == 'Enable') {
+			num_links++;
+		}
+	}
+	// Add 1 for the sidebar button
+	num_links++;
+
+	// Calculate link width for responsive design
+	const link_width = sprintf('calc(100%% / %d)', num_links);
+-%}
+
+<style>
+	@media screen and (max-width: 720px) {
+		.navbar a {
+			width: {{ link_width }};
+		}
+	}
+
+	{% if (!navbar_enabled): %}
+	.navbar {
+		display: none;
+	}
+	{% endif %}
+</style>
+</div>
+
+<!-- Footer -->
+<footer class="mt-8 max-w-full mx-8">
+	<div class="glass-panel rounded-xl text-center p-6">
+		<div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+			<div class="flex items-center space-x-3">
+				<img src="{{ media }}/resources/images/brand.png" alt="Orion OS" class="h-8 w-auto">
+				<div class="text-left">
+					<p class="text-neutral-400 text-sm">v0.0.1</p>
+				</div>
+			</div>
+			<div class="flex items-center space-x-4 text-sm text-neutral-400">
+				<span>{{ version.luciname }}</span>
+				<span>·</span>
+				<a href="https://github.com/CoolLoong/luci-theme-orion"
+					class="hover:text-primary-400 transition-colors"
+					target="_blank" rel="noopener">
+					GitHub
+				</a>
+			</div>
+		</div>
+	</div>
+</footer>
+</main>
+</div>
+
+<!-- Enhanced Mobile Navbar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 lg:hidden" id="mobileNavbar">
+	<div class="glass-heavy border-t border-white/10">
+		{% if (navbar_enabled): %}
+		<div class="flex items-center justify-around py-2">
+			{%
+			const navbar_items = [];
+			let menu_button_name = 'Menu';
+
+			for (let section in navbars) {
+				if (navbars[section].enable == 'Enable') {
+					push(navbar_items, navbars[section]);
+					// Use the first navbar item's name as menu button name, or keep default
+					if (length(navbar_items) == 1 && navbars[section].name) {
+						menu_button_name = navbars[section].name;
+					}
+				}
+			}
+
+			// Sort by line number
+			sort(navbar_items, (a, b) => int(a.line ?? 0) - int(b.line ?? 0));
+
+			// Calculate link width including the menu button
+			const total_items = length(navbar_items) + 1;
+			const item_width = sprintf('calc(100%% / %d)', total_items);
+
+			// Render navbar items
+			for (let section in navbar_items):
+				const address = section.address;
+				const icon_url = icons[address] ?? 'resources/icons/navbar/overview.png';
+				const target_blank = section.newtab == 'Yes' ? 'target="_blank"' : '';
+				const title = section.name ?? 'Menu';
+			%}
+			<a href="{{ address }}" {{ target_blank }}
+			   class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+			   style="width: {{ item_width }};">
+				<div class="w-6 h-6 relative">
+					<img src="{{ media }}/{{ icon_url }}" alt="{{ title }}"
+					     class="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"/>
+					<div class="absolute inset-0 bg-primary-500 rounded opacity-0 group-hover:opacity-20 transition-opacity"></div>
+				</div>
+				<span class="text-xs text-neutral-400 group-hover:text-white transition-colors truncate w-full text-center">{{ title }}</span>
+			</a>
+			{% endfor %}
+
+			<!-- Always add menu toggle button as the last item -->
+			<button onclick="toggleSidebar()"
+					class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-white/10 transition-all duration-300 group"
+					style="width: {{ item_width }};">
+				<div class="w-6 h-6 relative">
+					<svg class="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity text-neutral-400"
+					     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						      d="M4 6h16M4 12h16M4 18h16"></path>
+					</svg>
+					<div class="absolute inset-0 bg-primary-500 rounded opacity-0 group-hover:opacity-20 transition-opacity"></div>
+				</div>
+				<span class="text-xs text-neutral-400 group-hover:text-white transition-colors truncate w-full text-center">{{ menu_button_name }}</span>
+			</button>
+		</div>
+		{% endif %}
+	</div>
+</nav>
+
+<script>
+	// Mobile Navbar Scroll Behavior
+	{
+		const nav = document.querySelector('#mobileNavbar');
+		let lastScrollY = window.scrollY;
+		let isNavbarHidden = false;
+
+		const handleScroll = () => {
+			if (lastScrollY < window.scrollY && window.scrollY > 100) {
+				// Scrolling down - hide navbar
+				if (!isNavbarHidden) {
+					nav.style.transform = 'translateY(100%)';
+					isNavbarHidden = true;
+				}
+			} else {
+				// Scrolling up - show navbar
+				if (isNavbarHidden) {
+					nav.style.transform = 'translateY(0)';
+					isNavbarHidden = false;
+				}
+			}
+			lastScrollY = window.scrollY;
+		};
+		window.addEventListener('scroll', handleScroll);
+		window.addEventListener('beforeunload', () => {
+			window.removeEventListener('scroll', handleScroll);
+		});
+	}
+
+	function toggleSidebar() {
+		const sidebar = document.getElementById('sidebar');
+		const overlay = document.getElementById('sidebarOverlay');
+		const body = document.body;
+
+		if (!sidebar || !overlay) return;
+
+		// Check if sidebar is currently hidden
+		const isHidden = sidebar.classList.contains('-translate-x-full');
+
+		if (isHidden) {
+			// Show sidebar
+			sidebar.classList.remove('-translate-x-full');
+			sidebar.classList.add('translate-x-0');
+			overlay.classList.remove('opacity-0', 'invisible');
+			overlay.classList.add('opacity-100', 'visible');
+			body.classList.add('overflow-hidden');
+		} else {
+			// Hide sidebar
+			sidebar.classList.add('-translate-x-full');
+			sidebar.classList.remove('translate-x-0');
+			overlay.classList.add('opacity-0', 'invisible');
+			overlay.classList.remove('opacity-100', 'visible');
+			body.classList.remove('overflow-hidden');
+		}
+	}
+</script>
+<script type="text/javascript">L.require('menu-orion');</script>
+</body>
+</html>
