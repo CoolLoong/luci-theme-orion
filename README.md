@@ -51,7 +51,7 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 ## Related Projects
 
-- [orionwrt](https://github.com/CoolLoong/orionwrt): Example firmware with orion theme.
+[orionwrt](https://github.com/CoolLoong/orionwrt): Example firmware with orion theme.
 
 ## Credits
 
