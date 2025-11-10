@@ -796,5 +796,5 @@
     };
     window.addEventListener('beforeunload', cleanup);
     window.addEventListener('unload', cleanup);
-    console.log('📱 Orion App loaded');
+    console.log('📱 Orion App loaded!');
 })(window, document);

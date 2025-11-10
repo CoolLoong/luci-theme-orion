@@ -356,7 +356,7 @@
     }
 
     h2 {
-        @apply text-2xl leading-8;
+        @apply text-2xl leading-8 mt-8;
     }
 
     h3 {

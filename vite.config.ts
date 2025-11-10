@@ -2,6 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { cpSync } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join, resolve } from "path";
+import type { AtRule, Container } from "postcss";
 import { minify as terserMinify } from "terser";
 import { defineConfig, loadEnv, Plugin, ResolvedConfig } from "vite";
 
@@ -75,12 +76,87 @@ function createRedirectPlugin(): Plugin {
     apply: "serve",
 
     configureServer(server) {
-      server.middlewares.use((req, res, next) => {
+      // Watch menu-orion.js (LuCI module) and trigger full reload on change
+      const menuOrionJs = resolve(CURRENT_DIR, "src/menu-orion.js");
+      server.watcher.add(menuOrionJs);
+      server.watcher.on("change", (file) => {
+        if (file === menuOrionJs) {
+          console.log(`[menu-orion.js] changed, reloading...`);
+          server.ws.send({ type: "full-reload", path: "*" });
+        }
+      });
+
+      // Intercept HMR updates and rewrite paths to match what browser actually loads
+      server.ws.on("connection", (socket) => {
+        const originalSend = socket.send.bind(socket);
+        socket.send = function (data: any, ...args: any[]) {
+          if (typeof data === "string") {
+            try {
+              const message = JSON.parse(data);
+              if (message.type === "update") {
+                message.updates = message.updates?.map((update: any) => {
+                  // Rewrite CSS path: /src/main.css* -> /luci-static/orion/orion.css*
+                  if (update.path && update.path.startsWith("/src/main.css")) {
+                    const query = update.path.includes("?") ? update.path.split("?")[1] : "";
+                    return {
+                      ...update,
+                      path: `/luci-static/orion/orion.css${query ? "?" + query : ""}`
+                    };
+                  }
+                  return update;
+                });
+                data = JSON.stringify(message);
+              }
+            } catch (ignored) { }
+          }
+          return originalSend(data, ...args);
+        };
+      });
+
+      server.middlewares.use(async (req, res, next) => {
         if (req.url === "/" || req.url === "/index.html") {
           res.writeHead(302, { Location: "/cgi-bin/luci" });
           res.end();
           return;
         }
+
+        // Inject Vite client into HTML responses for HMR
+        if (req.url?.startsWith("/cgi-bin/luci")) {
+          const originalWrite = res.write.bind(res);
+          const originalEnd = res.end.bind(res);
+          const chunks: Buffer[] = [];
+          res.write = function (chunk: any): boolean {
+            chunks.push(Buffer.from(chunk));
+            return true;
+          };
+          res.end = function (chunk?: any, ...args: any[]): any {
+            if (chunk) chunks.push(Buffer.from(chunk));
+            let html = Buffer.concat(chunks).toString("utf8");
+            // Inject Vite client script before </head>
+            if (html.includes("</head>")) {
+              html = html.replace(
+                "</head>",
+                '<script type="module" src="/@vite/client"></script></head>'
+              );
+            }
+            res.write = originalWrite;
+            res.end = originalEnd;
+            return originalEnd(html, ...args);
+          };
+        }
+
+        // Serve LuCI JS files as raw files without transformation
+        if (req.url === "/src/menu-orion.js") {
+          const filePath = resolve(CURRENT_DIR, req.url.slice(1));
+          try {
+            const content = await readFile(filePath, "utf-8");
+            res.setHeader("Content-Type", "application/javascript");
+            res.setHeader("Cache-Control", "no-cache");
+            res.end(content);
+            return;
+          } catch (ignored) {}
+        }
+
         next();
       });
     },
@@ -174,8 +250,8 @@ export default defineConfig(({ mode }) => {
           {
             postcssPlugin: "remove-layers",
             Once(root) {
-              function removeLayers(node) {
-                node.walkAtRules("layer", (rule) => {
+              function removeLayers(node: Container) {
+                node.walkAtRules("layer", (rule: AtRule) => {
                   removeLayers(rule);
                   rule.replaceWith(rule.nodes);
                 });
@@ -187,8 +263,6 @@ export default defineConfig(({ mode }) => {
       },
       devSourcemap: true,
     },
-
-    logLevel: "warn",
 
     publicDir: false, // Disable default public directory copying to avoid duplication
 
