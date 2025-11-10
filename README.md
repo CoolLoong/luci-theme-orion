@@ -19,7 +19,7 @@
 [fireware]: https://github.com/CoolLoong/orionwrt
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/CoolLoong/luci-theme-orion/master/htdocs/luci-static/orion/resources/brand.png">
+<img src="https://raw.githubusercontent.com/CoolLoong/luci-theme-orion/master/public/images/brand.png">
 
 # A brand new OpenWrt LuCI theme
 
