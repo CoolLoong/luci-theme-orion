@@ -2,8 +2,8 @@
 	import { getuid, getspnam } from 'luci.core';
 
 	const boardinfo = ubus.call('system', 'board');
-	const node = dispatcher.context.dispatched;
-	const path = join('-', ctx.request_path);
+	const node = dispatcher.context?.dispatched;
+	const path = ctx.request_path ? join('-', ctx.request_path) : '';
 
 	http.prepare_content('text/html; charset=UTF-8');
 -%}
@@ -34,7 +34,7 @@
 	{% endif %}
 </head>
 
-<body class="min-h-screen bg-dark font-inter antialiased overflow-x-hidden lang_{{ dispatcher.lang }} {% if (ctx.authsession) %}logged-in{% endif %} {% if (path != '') %}node-{{ entityencode(path, true) }}{% else %}node-main-login{% endif %}" data-page="{{ entityencode(path, true) }}" style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/dashboard.png') center/cover fixed;">
+<body class="min-h-screen bg-dark font-inter antialiased overflow-x-hidden lang_{{ dispatcher.lang }} {{ ctx.authsession ? 'logged-in' : '' }} {{ path != '' ? 'node-' + entityencode(path, true) : 'node-main-login' }}" data-page="{{ entityencode(path, true) }}" style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/background.png') center/cover fixed;">
 
 <!-- Main Header -->
 <header class="fixed top-0 left-0 right-0 z-50 glass-heavy border-b border-white/10 animate-fade-in">
@@ -42,7 +42,7 @@
 		<div class="flex items-center justify-between h-full px-6 lg:px-8">
 			<!-- Logo Section -->
 			<div class="flex items-center space-x-4">
-				<a id="logo" href="{% if (ctx.authsession) %}{{ dispatcher.build_url('admin/status/overview') }}{% else %}#{% endif %}"
+				<a id="logo" href="{{ ctx.authsession ? dispatcher.build_url('admin/status/overview') : '#' }}"
 				   class="flex items-center space-x-3 group transition-all duration-300 hover:scale-105">
 					<div class="relative">
 						<img src="{{ media }}/resources/images/brand.png" alt="OpenWrt" class="h-8 w-auto transition-all duration-300 group-hover:brightness-110">
@@ -114,7 +114,7 @@
 					<h4>{{ _('No password set!') }}</h4>
 					<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface.') }}</p>
 					{% if (dispatcher.lookup("admin/system/admin")): %}
-					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url('admin/system/admin') }}">{{ _('Go to password configuration...') }}</a></div>
 					{% endif %}
 				</div>
 			{% endif %}
@@ -124,7 +124,7 @@
 					<h4>{{ _('System running in recovery (initramfs) mode.') }}</h4>
 					<p>{{ _('No changes to settings will be stored and are lost after rebooting. This mode should only be used to install a firmware upgrade') }}</p>
 					{% if (dispatcher.lookup("admin/system/flash")): %}
-					  <div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/flash") }}">{{ _('Go to firmware upgrade...') }}</a></div>
+					  <div class="right"><a class="btn" href="{{ dispatcher.build_url('admin/system/flash') }}">{{ _('Go to firmware upgrade...') }}</a></div>
 					{% endif %}
 				</div>
 			{% endif %}

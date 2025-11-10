@@ -34,7 +34,7 @@
 </head>
 
 <body class="min-h-screen bg-dark font-inter antialiased overflow-hidden"
-      style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/dashboard.png') center/cover fixed;">
+      style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/background.png') center/cover fixed;">
 
 <!-- Animated Background Elements -->
 <div class="fixed inset-0 overflow-hidden pointer-events-none">
@@ -146,7 +146,7 @@
 					        class="w-full py-3 text-base font-semibold bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 rounded-xl transition-all duration-300"
 					        id="loginButton">
 						<span id="loginButtonText">{{ _('Sign In') }}</span>
-						<svg id="loginSpinner" class="hidden w-5 h-5 ml-2 animate-spin inline" fill="none"
+						<svg id="loginSpinner" class="hidden w-5 h-5 ml-2 animate-spin" fill="none"
 						     stroke="currentColor" viewBox="0 0 24 24">
 							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
 							        stroke-width="4"></circle>
@@ -246,6 +246,7 @@
 		// Show loading state
 		buttonText.textContent = '{{ _("Signing In...") }}';
 		spinner.classList.remove('hidden');
+		spinner.classList.add('inline');
 		button.disabled = true;
 		button.classList.add('opacity-75', 'cursor-not-allowed');
 	});

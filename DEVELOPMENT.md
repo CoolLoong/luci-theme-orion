@@ -164,13 +164,13 @@ New JS takes effect
 **Location**: `public/`
 
 ```
-Browser requests: /luci-static/orion/resources/images/logo.png
+Browser requests: /luci-static/orion/resources/images/brand.png
     ↓
 Vite intercepts request
     ↓
-Rewrites to: /public/images/logo.png
+Rewrites to: /public/images/brand.png
     ↓
-Returns: public/images/logo.png
+Returns: public/images/brand.png
 ```
 
 **Supported Types**:

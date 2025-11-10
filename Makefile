@@ -1,19 +1,37 @@
 include $(TOPDIR)/rules.mk
 
+# Standard LuCI variables following luci.mk conventions
+LUCI_NAME:=luci-theme-orion
+LUCI_TYPE:=theme
+LUCI_BASENAME:=orion
 LUCI_TITLE:=Orion Theme
 LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
+
+# Package information
+PKG_NAME:=$(LUCI_NAME)
 PKG_VERSION:=0.0.1
 PKG_RELEASE:=1
 PKG_LICENSE:=Apache-2.0
-PKG_MAINTAINER:=CoolLoong
 
-# Disable CSS minification as we handle it in build
-LUCI_MINIFY_CSS:=
+include $(INCLUDE_DIR)/package.mk
+
+define Package/$(PKG_NAME)
+	SECTION:=luci
+	CATEGORY:=LuCI
+	SUBMENU:=4. Themes
+	TITLE:=$(LUCI_TITLE)
+	URL:=https://github.com/CoolLoong/luci-theme-orion
+	DEPENDS:=$(LUCI_DEPENDS)
+	PKGARCH:=$(LUCI_PKGARCH)
+	MAINTAINER:=CoolLoong
+endef
+
+define Package/$(PKG_NAME)/description
+	Modern LuCI theme with Tailwind CSS and Vite
+endef
 
 PKG_BUILD_DEPENDS:=node/host
-
-include $(TOPDIR)/feeds/luci/luci.mk
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
@@ -23,15 +41,82 @@ define Build/Prepare
 	$(CP) -r ./src $(PKG_BUILD_DIR)/
 	$(CP) -r ./public $(PKG_BUILD_DIR)/
 	$(CP) -r ./scripts $(PKG_BUILD_DIR)/
+	$(CP) -r ./ucode $(PKG_BUILD_DIR)/
+	$(CP) -r ./root $(PKG_BUILD_DIR)/
+endef
+
+define Build/Configure
 endef
 
 define Build/Compile
-	cd $(PKG_BUILD_DIR) && npm install --production=false
+	cd $(PKG_BUILD_DIR) && npm install --verbose --no-audit --no-fund || \
+		(echo "npm install failed, retrying..." && npm install --verbose --no-audit --no-fund)
 	cd $(PKG_BUILD_DIR) && npm run build
-	# Move view JS files to htdocs for proper installation
 	if [ -d "$(PKG_BUILD_DIR)/ucode/view" ]; then \
 		mkdir -p $(PKG_BUILD_DIR)/htdocs/luci-static/resources/view; \
 		cp -a $(PKG_BUILD_DIR)/ucode/view/* $(PKG_BUILD_DIR)/htdocs/luci-static/resources/view/; \
 		rm -rf $(PKG_BUILD_DIR)/ucode/view; \
 	fi
 endef
+
+define Package/$(PKG_NAME)/install
+	# Install UCI defaults
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+	if [ -d $(PKG_BUILD_DIR)/root/etc/uci-defaults ]; then \
+		$(INSTALL_BIN) $(PKG_BUILD_DIR)/root/etc/uci-defaults/* $(1)/etc/uci-defaults/ 2>/dev/null || true; \
+	fi
+
+	# Install UCI config
+	$(INSTALL_DIR) $(1)/etc/config
+	if [ -d $(PKG_BUILD_DIR)/root/etc/config ]; then \
+		$(INSTALL_CONF) $(PKG_BUILD_DIR)/root/etc/config/* $(1)/etc/config/ 2>/dev/null || true; \
+	fi
+
+	# Install theme static files
+	$(INSTALL_DIR) $(1)/www/luci-static/$(LUCI_BASENAME)
+	if [ -d $(PKG_BUILD_DIR)/htdocs/luci-static/$(LUCI_BASENAME) ]; then \
+		$(CP) -a $(PKG_BUILD_DIR)/htdocs/luci-static/$(LUCI_BASENAME)/* $(1)/www/luci-static/$(LUCI_BASENAME)/ 2>/dev/null || true; \
+	fi
+
+	# Install shared resources
+	$(INSTALL_DIR) $(1)/www/luci-static/resources
+	if [ -d $(PKG_BUILD_DIR)/htdocs/luci-static/resources ]; then \
+		$(CP) -a $(PKG_BUILD_DIR)/htdocs/luci-static/resources/* $(1)/www/luci-static/resources/ 2>/dev/null || true; \
+	fi
+
+	# Install ucode templates
+	$(INSTALL_DIR) $(1)/usr/share/ucode/luci/template/themes/$(LUCI_BASENAME)
+	if [ -d $(PKG_BUILD_DIR)/ucode/template/themes/$(LUCI_BASENAME) ]; then \
+		$(INSTALL_DATA) $(PKG_BUILD_DIR)/ucode/template/themes/$(LUCI_BASENAME)/* $(1)/usr/share/ucode/luci/template/themes/$(LUCI_BASENAME)/ 2>/dev/null || true; \
+	fi
+
+	# Install LuCI menu configuration
+	$(INSTALL_DIR) $(1)/usr/share/luci/menu.d
+	if [ -f $(PKG_BUILD_DIR)/root/usr/share/luci/menu.d/luci-theme-$(LUCI_BASENAME).json ]; then \
+		$(INSTALL_DATA) $(PKG_BUILD_DIR)/root/usr/share/luci/menu.d/luci-theme-$(LUCI_BASENAME).json $(1)/usr/share/luci/menu.d/; \
+	fi
+endef
+
+define Package/$(PKG_NAME)/postinst
+#!/bin/sh
+[ -n "$${IPKG_INSTROOT}" ] || {
+	if [ -f /etc/uci-defaults/30_luci-theme-$(LUCI_BASENAME) ]; then
+		( . /etc/uci-defaults/30_luci-theme-$(LUCI_BASENAME) ) && \
+		rm -f /etc/uci-defaults/30_luci-theme-$(LUCI_BASENAME)
+	fi
+}
+exit 0
+endef
+
+define Package/$(PKG_NAME)/postrm
+#!/bin/sh
+[ -n "$${IPKG_INSTROOT}" ] || {
+	uci -q delete luci.themes.$(LUCI_BASENAME)
+	uci -q get luci.main.mediaurlbase | grep -q "$(LUCI_BASENAME)" && \
+		uci -q set luci.main.mediaurlbase=/luci-static/bootstrap
+	uci commit luci
+}
+exit 0
+endef
+
+$(eval $(call BuildPackage,$(PKG_NAME)))
