@@ -92,6 +92,7 @@
 }
 
 @layer components {
+    /* Glass Effects */
     .glass-panel {
         background-color: rgba(34, 35, 53, 0.6);
         backdrop-filter: blur(10px);
@@ -113,6 +114,7 @@
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     }
 
+    /* Buttons */
     .btn-hero {
         @apply relative inline-flex cursor-pointer items-center justify-center overflow-hidden text-sm font-medium transition-all duration-200 select-none;
         border-radius: 0.75rem;
@@ -143,6 +145,7 @@
         @apply -translate-y-px;
     }
 
+    /* Cards */
     .card-hero {
         @apply rounded-glass p-6 transition-all duration-300;
         background-color: rgba(34, 35, 53, 0.6);
@@ -156,6 +159,7 @@
         border-color: rgba(9, 12, 196, 0.3);
     }
 
+    /* Alerts */
     .alert-error {
         @apply flex items-center gap-3 rounded-lg p-4;
         background-color: rgba(239, 68, 68, 0.1);
@@ -186,6 +190,7 @@
 }
 
 @layer utilities {
+    /* Text Shadows */
     .text-shadow-sm {
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     }
@@ -202,6 +207,7 @@
         text-shadow: none;
     }
 
+    /* Animation Delays */
     .animation-delay-300 {
         animation-delay: 300ms;
     }
@@ -218,10 +224,12 @@
         animation-delay: 1000ms;
     }
 
+    /* Blur Effects */
     .blur-3xl {
         filter: blur(64px);
     }
 
+    /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
         width: 6px;
     }
@@ -240,7 +248,7 @@
         background: rgba(0, 153, 204, 0.7);
     }
 
-
+    /* Animations */
     .animate-fade-in {
         animation: fadeIn 0.5s ease-in-out;
     }
@@ -249,27 +257,7 @@
         animation: slideUp 0.3s ease-out;
     }
 
-    /* Custom Scrollbar */
-    .custom-scrollbar::-webkit-scrollbar {
-        @apply hidden;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    /* Text Shadows */
-    .text-shadow-sm {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    .text-shadow {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .text-shadow-lg {
-        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    }
-
-    /* Animations */
+    /* Keyframes - Deduplicated */
     @keyframes slideDownSmooth {
         from {
             opacity: 0;
@@ -306,6 +294,16 @@
         }
     }
 
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
     @keyframes slideUp {
         0% {
             transform: translateY(100%);
@@ -315,42 +313,6 @@
         100% {
             transform: translateY(0);
             opacity: 1;
-        }
-    }
-
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes pulse {
-        50% {
-            opacity: 0.5;
-        }
-    }
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes fadeOut {
-        0% {
-            opacity: 1;
-        }
-
-        100% {
-            opacity: 0;
         }
     }
 
@@ -378,15 +340,19 @@
         }
     }
 
-    @keyframes slideUp {
-        0% {
-            transform: translateY(100%);
-            opacity: 0;
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
         }
 
-        100% {
-            transform: translateY(0);
-            opacity: 1;
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes pulse {
+        50% {
+            opacity: 0.5;
         }
     }
 
@@ -554,8 +520,46 @@
     input[type="number"],
     select,
     textarea {
-        @apply rounded-xl border-0 px-4 py-3 text-white transition-all duration-200;
-        background: rgba(34, 35, 53, 0.6);
+        @apply rounded-xl border-0 px-4 py-3 text-white;
+        background-color: rgba(34, 35, 53, 0.6);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Base Button Styles - Unified */
+    button,
+    .btn,
+    .cbi-button,
+    input[type="submit"],
+    input[type="button"] {
+        @apply inline-flex cursor-pointer items-center justify-center rounded-lg border-0 px-4 py-2 text-sm font-medium text-white transition-all duration-200;
+        background: rgba(71, 85, 105, 0.8);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    button:hover,
+    .btn:hover,
+    .cbi-button:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover {
+        background: rgba(71, 85, 105, 1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Hide select scrollbar */
+    select::-webkit-scrollbar {
+        @apply hidden;
+    }
+
+    select {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        padding-right: 3rem;
     }
 
     input[type="text"]::placeholder,
@@ -575,30 +579,6 @@
     textarea:focus {
         @apply outline-none;
         box-shadow: 0 0 0 2px #006688 !important;
-    }
-
-    /* Buttons */
-    button,
-    .btn,
-    input[type="submit"],
-    input[type="button"] {
-        @apply inline-flex cursor-pointer items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200;
-    }
-
-    .btn-primary,
-    input[type="submit"] {
-        @apply text-white shadow-lg;
-        background: linear-gradient(to right, #0099cc, #2563eb);
-    }
-
-    .btn-primary:hover,
-    input[type="submit"]:hover {
-        @apply -translate-y-0.5 shadow-xl;
-    }
-
-    .btn-primary:active,
-    input[type="submit"]:active {
-        @apply translate-y-0;
     }
 
     /* Tables */
@@ -626,31 +606,7 @@
     }
 }
 
-/* Legacy LuCI Compatibility - Using standard CSS where Tailwind classes conflict */
-/* Glass Panel Effects */
-.glass-panel {
-    background-color: rgba(34, 35, 53, 0.6);
-    backdrop-filter: blur(10px);
-    @apply border border-white/10;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-.glass-heavy {
-    background-color: rgba(34, 35, 53, 0.8);
-    backdrop-filter: blur(20px);
-    @apply border border-white/10;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-.glass-ultra {
-    background-color: rgba(34, 35, 53, 0.9);
-    backdrop-filter: blur(40px);
-    @apply border;
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-/* Content Area */
+/* Layout */
 .content-main {
     @apply ml-64 min-h-screen p-8 pt-20;
 }
@@ -663,7 +619,6 @@
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-/* LuCI Specific Components */
 .luci-header {
     @apply border-b border-gray-600 px-6 py-4;
     background: rgba(34, 35, 53, 0.8);
@@ -724,6 +679,7 @@
     min-height: 75vh;
 }
 
+
 /* Main Content Cards */
 .main {
     @apply mb-6 rounded-2xl p-8 transition-all duration-300;
@@ -737,6 +693,7 @@
     @apply -translate-y-0.5;
     box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
 }
+
 
 /* CBI Form Sections */
 .cbi-section {
@@ -795,9 +752,14 @@
 .cbi-value input[type="number"],
 .cbi-value select,
 .cbi-value textarea {
-    @apply w-full rounded-lg border px-4 py-3 text-sm text-white transition-all duration-200;
+    @apply w-full rounded-lg border px-4 py-3 text-sm text-white;
     border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(34, 35, 53, 0.8);
+    background-color: rgba(34, 35, 53, 0.8);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cbi-value select {
+    padding-right: 3rem;
 }
 
 /* File Upload Input */
@@ -817,7 +779,6 @@ input[type="file"]:hover {
             rgba(55, 65, 81, 0.9),
             rgba(75, 85, 99, 0.8));
     box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25);
-    transform: translateY(-1px);
 }
 
 input[type="file"]:focus {
@@ -839,7 +800,6 @@ input[type="file"]::file-selector-button {
 input[type="file"]::file-selector-button:hover {
     background: linear-gradient(135deg, #0080b3, #1d4ed8);
     box-shadow: 0 4px 12px rgba(0, 153, 204, 0.4);
-    transform: translateY(-1px);
 }
 
 .cbi-value input:focus,
@@ -851,7 +811,8 @@ input[type="file"]::file-selector-button:hover {
     background: rgba(34, 35, 53, 0.9);
 }
 
-/* Tables */
+
+/* CBI Tables */
 .cbi-section-table {
     @apply my-4 w-full rounded-xl;
     background: rgba(34, 35, 53, 0.8);
@@ -889,7 +850,8 @@ table.table tr:hover {
     @apply bg-gray-700/30;
 }
 
-/* ifacebox */
+
+/* Interface Box */
 .ifacebox {
     @apply relative block overflow-hidden rounded-2xl border-2 border-transparent bg-linear-to-br from-indigo-400/15 to-indigo-700/10 p-6 shadow-xl backdrop-blur-lg transition-all duration-300;
     margin: 0.5rem 0 !important;
@@ -916,6 +878,7 @@ table.table tr:hover {
 .ifacebox .ifacebox-body span::after {
     content: attr(title);
 }
+
 
 /* Refresh Button */
 [data-indicator="poll-status"] {
@@ -955,7 +918,8 @@ table.table tr:hover {
     @apply hidden;
 }
 
-/* CPU/RAM monitor */
+
+/* CPU/RAM Monitor */
 #monitor .flex {
     @apply items-center gap-4 text-xs;
 }
@@ -963,6 +927,7 @@ table.table tr:hover {
 #monitor .flex>div {
     @apply items-center gap-1;
 }
+
 
 /* Dropdown Styles */
 .cbi-dropdown {
@@ -1005,13 +970,13 @@ table.table tr:hover {
 }
 
 .cbi-dropdown ul.dropdown {
-    @apply visible absolute z-50 m-0 mt-1 block max-h-60 origin-top scale-100 list-none overflow-y-auto rounded-lg border border-neutral-600 bg-neutral-700 p-0 opacity-100 shadow-lg;
+    @apply visible absolute z-50 m-0 block max-h-60 origin-top scale-100 list-none overflow-y-auto rounded-lg border border-neutral-600 bg-neutral-700 p-0 opacity-100 shadow-lg;
     min-height: auto !important;
     width: max-content !important;
     min-width: 100% !important;
-    top: auto !important;
+    top: calc(100% + 0.25rem) !important;
     left: 0 !important;
-    bottom: 0 !important;
+    bottom: auto !important;
 }
 
 .cbi-dropdown ul.dropdown li {
@@ -1027,6 +992,16 @@ table.table tr:hover {
 
 .cbi-dropdown ul.dropdown li[placeholder] {
     @apply text-neutral-400;
+}
+
+/* Hide dropdown scrollbar */
+.cbi-dropdown ul.dropdown::-webkit-scrollbar {
+    @apply hidden;
+}
+
+.cbi-dropdown ul.dropdown {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .cbi-dropdown ul li em {
@@ -1055,6 +1030,7 @@ table.table tr:hover {
     @apply focus:border-primary-500 outline-none;
 }
 
+
 /* Hide User Menu */
 .header .relative.group,
 header .relative.group,
@@ -1063,7 +1039,8 @@ button[onclick="toggleUserMenu()"],
     @apply hidden;
 }
 
-/* Sidebar and sidebar menu style */
+
+/* Sidebar and Menu Styles */
 .sidebar-orion {
     @apply fixed top-2 bottom-2 left-0 z-40 flex w-64 flex-col overflow-x-hidden overflow-y-auto transition-all duration-300 ease-out;
     background: linear-gradient(145deg,
@@ -1335,7 +1312,8 @@ button[onclick="toggleUserMenu()"],
     @apply block h-full w-full object-contain;
 }
 
-/* progressbar */
+
+/* Progressbar */
 .cbi-progressbar {
     @apply relative mt-1 mb-1 h-5 w-full min-w-[120px] overflow-hidden rounded-xl border border-white/10 bg-gray-800/40 text-center text-sm leading-5 font-medium tracking-wide text-white shadow;
 }
@@ -1354,7 +1332,8 @@ button[onclick="toggleUserMenu()"],
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* Alert message text styling */
+
+/* Alert Message Text Styling */
 .alert-message {
     @apply flex items-center gap-3 rounded-lg p-4 text-base leading-6 font-medium;
 }
@@ -1378,12 +1357,456 @@ button[onclick="toggleUserMenu()"],
     color: #374151 !important;
 }
 
-/* mwan3 card style */
+
+/* Tab Menu System */
+.cbi-tabmenu {
+    @apply m-0 mt-2 mb-6 flex list-none gap-1 rounded-2xl p-1;
+    background: rgba(55, 65, 81, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.2);
+}
+
+.cbi-tab,
+.cbi-tab-disabled {
+    @apply relative list-none rounded-xl transition-all duration-200;
+}
+
+.cbi-tab a,
+.cbi-tab-disabled a {
+    @apply block px-4 py-3 text-sm font-medium w-full h-full text-neutral-400 no-underline transition-colors duration-200 cursor-pointer;
+}
+
+.cbi-tab:hover a {
+    @apply text-white;
+}
+
+.cbi-tab {
+    @apply bg-white/10 text-white;
+    background: linear-gradient(135deg,
+            rgba(99, 102, 241, 0.3),
+            rgba(79, 70, 229, 0.3));
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.cbi-tab a {
+    @apply font-semibold text-white;
+}
+
+.cbi-tab-disabled {
+    @apply opacity-70;
+}
+
+.cbi-tab-disabled:hover a {
+    @apply text-neutral-400;
+}
+
+/* Tab Content */
+.cbi-tabcontent {
+    @apply hidden rounded-2xl p-6 transition-all duration-300;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.cbi-tabcontent.active {
+    @apply block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Tab content controlled by data-tab-active attribute */
+[data-tab-active="false"] {
+    display: none !important;
+}
+
+[data-tab-active="true"] {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+/* Describe Information */
+.cbi-map-descr {
+    @apply my-4;
+}
+
+.cbi-value-description {
+    @apply ml-1;
+}
+
+
+/* Action Buttons */
+/* Hide dropdown arrows */
+.cbi-button-apply .more,
+.cbi-button-apply .open {
+    display: none !important;
+}
+
+/* Show selected option as button text, hide dropdown menu */
+.cbi-button-apply ul {
+    position: static !important;
+    display: inline !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+}
+
+.cbi-button-apply ul li {
+    display: none !important;
+}
+
+/* Only show the selected option */
+.cbi-button-apply ul li[selected] {
+    display: inline !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    border-radius: 0 !important;
+    cursor: inherit !important;
+    border: none !important;
+    box-shadow: none !important;
+    text-align: inherit !important;
+    line-height: inherit !important;
+    vertical-align: baseline !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: normal !important;
+}
+
+/* Primary/Apply Button - Blue */
+.cbi-button-apply {
+    @apply bg-blue-500;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cbi-button-apply:hover {
+    @apply bg-blue-600;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+/* Success/Save Button - Teal */
+.cbi-button-save {
+    @apply bg-teal-500;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+.cbi-button-save:hover {
+    @apply bg-teal-600;
+    box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
+}
+
+/* Warning/Reset Button - Orange */
+.cbi-button-reset {
+    @apply bg-orange-600;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.cbi-button-reset:hover {
+    @apply bg-orange-700;
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+}
+
+
+/* Control Group */
+.control-group {
+    @apply flex items-center gap-2;
+}
+
+/* Special case: allow wrapping for time sync buttons(/cgi-bin/luci/admin/system/system) */
+.cbi-value-field .control-group {
+    @apply flex-wrap;
+}
+
+/* Hide CBI form hidden elements container */
+form>div:first-child:has(input[type="hidden"][name="token"]) {
+    @apply hidden;
+}
+
+.control-group input {
+    @apply flex-1;
+}
+
+.control-group .btn,
+.control-group .cbi-button {
+    @apply shrink-0;
+}
+
+
+/* Pagination Buttons */
+.pager {
+    @apply flex items-center justify-center gap-4 py-4;
+}
+
+.pager .text {
+    @apply flex-1 text-center text-sm font-medium text-neutral-300;
+}
+
+.pager .btn.prev,
+.pager .btn.next {
+    @apply px-3 py-2 text-center;
+}
+
+
+/* Service Action Buttons */
+.btn+.cbi-button-action {
+    @apply ml-2;
+}
+
+/* Secondary/Positive Button - Slate */
+.cbi-button-positive {
+    @apply bg-slate-500;
+    box-shadow: 0 2px 8px rgba(71, 85, 105, 0.3);
+}
+
+.cbi-button-positive:hover {
+    @apply bg-slate-600;
+    box-shadow: 0 4px 12px rgba(71, 85, 105, 0.4);
+}
+
+/* Action Button - Yellow */
+.cbi-button-action {
+    @apply bg-yellow-500;
+    box-shadow: 0 2px 8px rgba(234, 179, 8, 0.3);
+}
+
+.cbi-button-action:hover {
+    @apply bg-yellow-600;
+    box-shadow: 0 4px 12px rgba(234, 179, 8, 0.4);
+}
+
+/* Neutral Button - Slate Dark */
+.cbi-button-neutral {
+    @apply bg-slate-600;
+    box-shadow: 0 2px 6px rgba(51, 65, 85, 0.3);
+}
+
+.cbi-button-neutral:hover {
+    @apply bg-slate-700;
+    box-shadow: 0 4px 10px rgba(51, 65, 85, 0.4);
+}
+
+/* Add Button - Slate Dark */
+.cbi-button-add {
+    @apply bg-slate-600;
+    box-shadow: 0 2px 6px rgba(51, 65, 85, 0.3);
+}
+
+.cbi-button-add:hover {
+    @apply bg-slate-700;
+    box-shadow: 0 4px 10px rgba(51, 65, 85, 0.4);
+}
+
+/* Startup Init Tab Buttons - Special Styling */
+div[data-tab="init"] .cbi-button-action {
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+div[data-tab="init"] .cbi-button-action:hover {
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(2) {
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(3) {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(4) {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(5) {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(2):hover,
+div[data-tab="init"] .cbi-button-action:nth-child(3):hover,
+div[data-tab="init"] .cbi-button-action:nth-child(4):hover,
+div[data-tab="init"] .cbi-button-action:nth-child(5):hover {
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(3):hover {
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(4):hover {
+    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+}
+
+div[data-tab="init"] .cbi-button-action:nth-child(5):hover {
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+
+/* Checkbox Styling */
+.cbi-checkbox {
+    @apply relative inline-flex items-center;
+}
+
+.cbi-checkbox input[type="checkbox"] {
+    @apply sr-only;
+}
+
+.cbi-checkbox label {
+    @apply relative flex h-5 w-5 cursor-pointer items-center justify-center rounded border-2 transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(34, 35, 53, 0.8);
+}
+
+.cbi-checkbox label:hover {
+    border-color: rgba(0, 153, 204, 0.5);
+    background: rgba(0, 153, 204, 0.1);
+}
+
+.cbi-checkbox input[type="checkbox"]:checked+label {
+    @apply border-blue-500;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3);
+}
+
+.cbi-checkbox input[type="checkbox"]:checked+label:after {
+    content: "✓";
+    @apply absolute text-xs font-bold text-white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cbi-checkbox input[type="checkbox"]:focus+label {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
+}
+
+
+/* --- Status Pages --- */
+
+/* System Log Page (/cgi-bin/luci/admin/status/logs) */
+#content_syslog {
+    @apply mt-2 rounded-2xl p-6;
+    background: rgba(34, 35, 53, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+#content_syslog>div:first-child,
+#content_syslog>div:nth-child(2) {
+    @apply mb-4 flex flex-wrap items-center gap-3 rounded-xl p-4;
+    background: rgba(55, 65, 81, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#content_syslog label {
+    @apply text-sm font-medium text-gray-300;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-checkbox {
+    @apply h-4 w-4 rounded border border-gray-400 bg-gray-700 text-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0;
+    margin: 0 !important;
+}
+
+#content_syslog .cbi-input-select,
+#content_syslog .cbi-input-text {
+    @apply rounded-lg border px-3 py-2 text-sm text-white transition-all duration-200;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(34, 35, 53, 0.8);
+    margin: 0 !important;
+    min-width: 120px;
+}
+
+#content_syslog .cbi-input-select:focus,
+#content_syslog .cbi-input-text:focus {
+    @apply outline-none;
+    border-color: #0099cc;
+    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2);
+    background: rgba(34, 35, 53, 0.9);
+}
+
+#logTextFilter {
+    min-width: 200px !important;
+    flex-grow: 1;
+}
+
+/* Scroll buttons container */
+#content_syslog>div:nth-child(3),
+#content_syslog>div:last-child {
+    @apply mb-4 flex justify-center;
+}
+
+#scrollDownButton,
+#scrollUpButton {
+    @apply rounded-lg border-none px-6 py-3 font-medium text-white transition-all duration-200;
+    background: linear-gradient(135deg, #0099cc, #2563eb);
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+#scrollDownButton:hover,
+#scrollUpButton:hover {
+    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
+}
+
+/* System log textarea */
+#syslog {
+    @apply w-full resize-none overflow-visible rounded-xl p-4 font-mono text-sm leading-relaxed;
+    background: rgba(15, 23, 42, 0.9);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: auto;
+    max-height: none;
+    height: auto;
+}
+
+/* Log level styling within textarea */
+#syslog {
+    @apply whitespace-pre-wrap;
+    word-wrap: break-word;
+}
+
+
+/* mwan3 Card Style */
 #mwan3-service-status {
     @apply mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-2 text-center;
 }
 
-/* NFT Firewall Styling(/cgi-bin/luci/admin/status/nftables) */
+
+/* NFT Firewall Styling (/cgi-bin/luci/admin/status/nftables) */
 .nft-table {
     @apply mt-6;
 }
@@ -1544,419 +1967,341 @@ table.nft-rules td.center[colspan="3"] {
     @apply hidden;
 }
 
-/* /cgi-bin/luci/admin/status/routes */
+
+/* Routes (/cgi-bin/luci/admin/status/routes) */
 body[class*="admin-status-routes"] #view p,
 body[class*="admin-status-routes"] #view ul {
     display: none !important;
 }
 
-/* Tab Menu System */
-.cbi-tabmenu {
-    @apply m-0 mt-2 mb-6 flex list-none gap-1 rounded-2xl p-1;
-    background: rgba(55, 65, 81, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 12px rgba(31, 38, 135, 0.2);
+
+/* --- System Pages --- */
+
+/* System Processes (/cgi-bin/luci/admin/status/processes) */
+[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions {
+    @apply whitespace-nowrap;
 }
 
-.cbi-tab,
-.cbi-tab-disabled {
-    @apply relative list-none rounded-xl transition-all duration-200;
+[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions>div {
+    @apply flex justify-center gap-1;
 }
 
-.cbi-tab a,
-.cbi-tab-disabled a {
-    @apply block px-4 py-3 text-sm font-medium w-full h-full text-neutral-400 no-underline transition-colors duration-200 cursor-pointer;
+[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions .btn,
+[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions .cbi-button {
+    @apply px-2 py-1.5 text-xs whitespace-nowrap text-white;
 }
 
-.cbi-tab:hover a {
-    @apply text-white;
-}
-
-.cbi-tab {
-    @apply bg-white/10 text-white;
-    background: linear-gradient(135deg,
-            rgba(99, 102, 241, 0.3),
-            rgba(79, 70, 229, 0.3));
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
-}
-
-.cbi-tab a {
-    @apply font-semibold text-white;
-}
-
-.cbi-tab-disabled {
-    @apply opacity-70;
-}
-
-.cbi-tab-disabled:hover a {
-    @apply text-neutral-400;
-}
-
-/* Tab Content */
-.cbi-tabcontent {
-    @apply hidden rounded-2xl p-6 transition-all duration-300;
-    background: rgba(34, 35, 53, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-.cbi-tabcontent.active {
-    @apply block;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-/* Tab content controlled by data-tab-active attribute */
-[data-tab-active="false"] {
-    display: none !important;
-}
-
-[data-tab-active="true"] {
-    display: block !important;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-/* describe information */
-.cbi-map-descr {
-    @apply my-4;
-}
-
-.cbi-value-description {
-    @apply ml-1;
-}
-
-/* Style dropdown to look like a regular button */
-
-/* Hide dropdown arrows */
-.cbi-dropdown.cbi-button-applybutton .more,
-.cbi-dropdown.cbi-button-apply .open {
-    display: none !important;
-}
-
-/* Show selected option as button text, hide dropdown menu */
-.cbi-dropdown.cbi-button-apply ul {
-    position: static !important;
-    display: inline !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    backdrop-filter: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    height: auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: normal !important;
-}
-
-.cbi-dropdown.cbi-button-apply ul li {
-    display: none !important;
-}
-
-/* Only show the selected option */
-.cbi-dropdown.cbi-button-apply ul li[selected] {
-    display: inline !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    color: inherit !important;
-    font-size: inherit !important;
-    font-weight: inherit !important;
-    border-radius: 0 !important;
-    cursor: inherit !important;
-    border: none !important;
-    box-shadow: none !important;
-    text-align: inherit !important;
-    line-height: inherit !important;
-    vertical-align: baseline !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    height: auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-    white-space: normal !important;
-}
-
-/* apply button */
-.cbi-dropdown.cbi-button-apply {
-    @apply inline-flex cursor-pointer items-center justify-center rounded-lg border-0 px-6 py-3 text-sm font-medium text-white bg-blue-500;
-    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
-    min-width: auto !important;
-}
-
-.cbi-dropdown.cbi-button-apply:hover {
+[data-page="admin-status-processes"] .btn:nth-child(1) {
     @apply bg-blue-600;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
 }
 
-/* save button */
-.cbi-button-save {
-    @apply inline-flex cursor-pointer items-center justify-center rounded-lg border-0 px-6 py-3 text-sm font-medium text-white bg-teal-500;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+[data-page="admin-status-processes"] .btn:nth-child(1):hover {
+    @apply bg-blue-700;
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
 }
 
-.cbi-button-save:hover {
-    @apply bg-teal-600;
+[data-page="admin-status-processes"] .btn:nth-child(2) {
+    @apply bg-amber-600;
+    box-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);
 }
 
-/* reset button */
-.cbi-button-reset {
-    @apply inline-flex cursor-pointer items-center justify-center rounded-lg border-0 px-6 py-3 text-sm font-medium text-white bg-orange-600;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+[data-page="admin-status-processes"] .btn:nth-child(2):hover {
+    @apply bg-amber-700;
+    box-shadow: 0 4px 8px rgba(217, 119, 6, 0.4);
 }
 
-.cbi-button-reset:hover {
-    @apply bg-orange-700;
+[data-page="admin-status-processes"] .btn:nth-child(3) {
+    @apply bg-red-600;
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
 }
 
-/* Fix control-group layout - input and button should be inline */
-.control-group {
-    @apply flex items-center gap-2;
+[data-page="admin-status-processes"] .btn:nth-child(3):hover {
+    @apply bg-red-700;
+    box-shadow: 0 4px 8px rgba(220, 38, 38, 0.4);
 }
 
-/* Special case: allow wrapping for time sync buttons(/cgi-bin/luci/admin/system/system) */
-.cbi-value-field .control-group {
-    @apply flex-wrap;
+
+/* Package Manager (/cgi-bin/luci/admin/system/package-manager) */
+[data-page="admin-system-package-manager"] .controls {
+    @apply gap-5;
 }
 
-/* Hide CBI form hidden elements container */
-form>div:first-child:has(input[type="hidden"][name="token"]) {
-    @apply hidden;
+[data-page="admin-system-package-manager"] .controls:nth-child(4) .control-group {
+    align-content: flex-start
 }
 
-.control-group input {
-    @apply flex-1;
+[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(1) {
+    flex: 1;
 }
 
-.control-group .btn,
-.control-group .cbi-button {
-    @apply shrink-0;
+[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(2) {
+    flex: 4;
 }
 
-/* Pagination Buttons Styling(/cgi-bin/luci/admin/system/package-manager) */
-.pager {
-    @apply flex items-center justify-center gap-4 py-4;
+[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(3) {
+    flex: 1;
 }
 
-.pager .text {
-    @apply flex-1 text-center text-sm font-medium text-neutral-300;
-}
-
-.pager .btn.prev,
-.pager .btn.next {
-    @apply px-3 py-2 text-center;
-}
-
-/* Service Action Buttons (/cgi-bin/luci/admin/system/startup) */
-.btn+.cbi-button-action {
-    @apply ml-2;
-}
-
-/* positive button */
-.cbi-button-positive {
+[data-page="admin-system-package-manager"] #view>div:nth-child(4)>div:nth-child(2)>span>button {
     @apply text-white bg-slate-500;
 }
 
-.cbi-button-positive:hover {
-    @apply bg-slate-600;
+[data-page="admin-system-package-manager"] .controls label {
+    @apply mb-2;
 }
 
-/* action button */
-.cbi-button-action {
-    @apply text-white bg-yellow-500;
+
+/* TTYD Styles */
+[data-page="admin-system-ttyd-ttyd"] #view iframe {
+    min-height: 75vh !important;
+    border-radius: 0px;
 }
 
-.cbi-button-action:hover {
-    @apply bg-yellow-600;
+
+/* Realtime (/cgi-bin/luci/admin/status/realtime) */
+[data-page="admin-status-realtime-load"] .cbi-map .cbi-section div {
+    background: #111225 !important;
 }
 
-/* neutral button */
-.cbi-button-neutral {
-    @apply text-white bg-emerald-400;
+
+/* Reboot (/cgi-bin/luci/admin/system/reboot) */
+[data-page="admin-system-reboot"] #view>* {
+    @apply mb-2;
 }
 
-.cbi-button-neutral:hover {
-    @apply bg-emerald-500;
+
+/* --- Network Pages --- */
+
+/* Network (/cgi-bin/luci/admin/network/network) */
+[data-page="admin-network-network"] .cbi-section-table {
+    @apply w-full;
 }
 
-div[data-tab="init"] .cbi-button-action {
-    @apply text-white;
-    background: linear-gradient(135deg, #0099cc, #2563eb) !important;
-    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(2) {
-    background: linear-gradient(135deg, #0099cc, #2563eb) !important;
-    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(3) {
-    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(4) {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(5) {
-    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(3):hover {
-    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(4):hover {
-    box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4) !important;
-}
-
-div[data-tab="init"] .cbi-button-action:nth-child(5):hover {
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4) !important;
-}
-
-/* Checkbox Styling */
-.cbi-checkbox {
-    @apply relative inline-flex items-center;
-}
-
-.cbi-checkbox input[type="checkbox"] {
-    @apply sr-only;
-}
-
-.cbi-checkbox label {
-    @apply relative flex h-5 w-5 cursor-pointer items-center justify-center rounded border-2 transition-all duration-200;
-    border-color: rgba(255, 255, 255, 0.3);
-    background: rgba(34, 35, 53, 0.8);
-}
-
-.cbi-checkbox label:hover {
-    border-color: rgba(0, 153, 204, 0.5);
-    background: rgba(0, 153, 204, 0.1);
-}
-
-.cbi-checkbox input[type="checkbox"]:checked+label {
-    @apply border-blue-500;
-    background: linear-gradient(135deg, #0099cc, #2563eb);
-    box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3);
-}
-
-.cbi-checkbox input[type="checkbox"]:checked+label:after {
-    content: "✓";
-    @apply absolute text-xs font-bold text-white;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.cbi-checkbox input[type="checkbox"]:focus+label {
-    @apply outline-none;
-    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.2);
-}
-
-/* System Log Page Styling(/cgi-bin/luci/admin/status/logs) */
-#content_syslog {
-    @apply mt-2 rounded-2xl p-6;
-    background: rgba(34, 35, 53, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-#content_syslog>div:first-child,
-#content_syslog>div:nth-child(2) {
-    @apply mb-4 flex flex-wrap items-center gap-3 rounded-xl p-4;
-    background: rgba(55, 65, 81, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#content_syslog label {
-    @apply text-sm font-medium text-gray-300;
+[data-page="admin-network-network"] .ifacebox {
+    @apply mb-0;
     margin: 0 !important;
 }
 
-#content_syslog .cbi-input-checkbox {
-    @apply h-4 w-4 rounded border border-gray-400 bg-gray-700 text-blue-500 focus:ring-2 focus:ring-blue-400 focus:ring-offset-0;
+[data-page="admin-network-network"] .ifacebox-head {
+    @apply rounded-t-xl px-4 py-2 text-sm font-semibold text-black text-center uppercase;
+}
+
+[data-page="admin-network-network"] .ifacebox-body {
+    @apply rounded-b-xl p-3;
+    background: rgba(34, 35, 53, 0.5);
+}
+
+[data-page="admin-network-network"] .ifacebox-body img.middle {
+    @apply inline-block h-5 w-5 align-middle;
+}
+
+[data-page="admin-network-network"] .ifacebox-body small {
+    @apply text-xs text-neutral-400;
+}
+
+[data-page="admin-network-network"] .cbi-tooltip-container {
+    @apply relative inline-block;
+}
+
+[data-page="admin-network-network"] .cbi-tooltip {
+    @apply hidden;
+}
+
+[data-page="admin-network-network"] #lan-ifc-description,
+[data-page="admin-network-network"] [id$="-ifc-description"] {
+    @apply text-sm;
+}
+
+[data-page="admin-network-network"] #lan-ifc-description br {
+    @apply hidden;
+}
+
+[data-page="admin-network-network"] [id$="-ifc-description"] .nowrap {
+    @apply mb-1 block;
+}
+
+[data-page="admin-network-network"] [id$="-ifc-description"] strong {
+    @apply text-neutral-400;
+}
+
+[data-page="admin-network-network"] .cbi-section-actions div {
+    @apply flex justify-center gap-1;
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-neutral.reconnect {
+    @apply bg-blue-600;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-neutral.reconnect:hover {
+    @apply bg-blue-700;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-neutral.down {
+    @apply bg-amber-600;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-neutral.down:hover {
+    @apply bg-amber-700;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.4);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-edit {
+    @apply bg-emerald-600;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-edit:hover {
+    @apply bg-emerald-700;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-remove {
+    @apply bg-red-600;
+    box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+}
+
+[data-page="admin-network-network"] .cbi-section-actions .cbi-button-remove:hover {
+    @apply bg-red-700;
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
+}
+
+
+/* DHCP (/cgi-bin/luci/admin/network/dhcp) */
+[data-page="admin-network-dhcp"] .cbi-value {
+    @apply block;
+}
+
+/* Diagnostics (/cgi-bin/luci/admin/network/diagnostics) */
+[data-page="admin-network-diagnostics"] .table .td {
+    @apply flex items-center gap-1;
+}
+
+[data-page="admin-network-diagnostics"] .table .td input[type="text"] {
+    @apply flex-1;
     margin: 0 !important;
 }
 
-#content_syslog .cbi-input-select,
-#content_syslog .cbi-input-text {
-    @apply rounded-lg border px-3 py-2 text-sm text-white transition-all duration-200;
+[data-page="admin-network-diagnostics"] .diag-action {
+    @apply flex items-center;
+}
+
+[data-page="admin-network-diagnostics"] .diag-action .btn,
+[data-page="admin-network-diagnostics"] .diag-action .cbi-button,
+[data-page="admin-network-diagnostics"] .diag-action .cbi-dropdown {
+    height: 42px;
+    min-height: 42px;
+    min-width: 150px;
+}
+
+
+/* --- Services Pages --- */
+
+/* DDNS (/cgi-bin/luci/admin/services/ddns) */
+[data-page="admin-services-ddns"] .cbi-value-field .cbi-button-apply {
+    @apply bg-orange-400;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
+}
+
+[data-page="admin-services-ddns"] .cbi-value-field .cbi-button-apply:hover {
+    @apply bg-orange-500;
+    box-shadow: 0 6px 16px rgba(251, 146, 60, 0.4);
+}
+
+[data-page="admin-services-ddns"] .cbi-section-table-cell .cbi-button {
+    @apply mr-1;
+}
+
+[data-page="admin-services-ddns"] .cbi-button-neutral {
+    @apply bg-transparent;
+}
+
+
+/* WOL (/cgi-bin/luci/admin/services/wol) */
+[data-page="admin-services-wol"] .cbi-section {
+    @apply min-h-[59vh];
+}
+
+
+/* --- VPN Pages --- */
+
+/* OpenVPN (/cgi-bin/luci/admin/vpn/openvpn) */
+[data-page="admin-vpn-openvpn"] .cbi-section-node {
+    @apply flex flex-col gap-6;
+}
+
+[data-page="admin-vpn-openvpn"] .table.cbi-section-table {
+    @apply rounded-2xl p-6;
+    background: rgba(34, 35, 53, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 6px 24px 0 rgba(31, 38, 135, 0.3);
+}
+
+[data-page="admin-vpn-openvpn"] .table.cbi-section-table h4 {
+    @apply mb-4 pb-3 text-lg font-semibold text-white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-page="admin-vpn-openvpn"] .table.cbi-section-table h4:not(:first-child) {
+    @apply mt-6;
+}
+
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row {
+    @apply mb-4 flex items-center gap-3;
+}
+
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row .td {
+    @apply flex-1;
+}
+
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row .td:last-child {
+    @apply flex-none;
+}
+
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row input[type="text"] {
+    @apply w-full rounded-lg border px-4 py-3 text-sm text-white;
     border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(34, 35, 53, 0.8);
-    margin: 0 !important;
-    min-width: 120px;
+    background-color: rgba(34, 35, 53, 0.8);
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-#content_syslog .cbi-input-select:focus,
-#content_syslog .cbi-input-text:focus {
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row input[type="text"]:focus {
     @apply outline-none;
     border-color: #0099cc;
-    box-shadow: 0 0 0 2px rgba(0, 153, 204, 0.2);
-    background: rgba(34, 35, 53, 0.9);
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.1);
 }
 
-#logTextFilter {
-    min-width: 200px !important;
-    flex-grow: 1;
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row select {
+    @apply w-full rounded-lg border px-4 py-3 text-sm text-white;
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(34, 35, 53, 0.8);
 }
 
-/* Scroll buttons container */
-#content_syslog>div:nth-child(3),
-#content_syslog>div:last-child {
-    @apply mb-4 flex justify-center;
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row input[type="file"] {
+    @apply w-full;
 }
 
-#scrollDownButton,
-#scrollUpButton {
-    @apply rounded-lg border-none px-6 py-3 font-medium text-white transition-all duration-200;
-    background: linear-gradient(135deg, #0099cc, #2563eb);
-    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+[data-page="admin-vpn-openvpn"] .tr.cbi-section-table-row .cbi-button-add {
+    @apply whitespace-nowrap;
 }
 
-#scrollDownButton:hover,
-#scrollUpButton:hover {
-    box-shadow: 0 6px 16px rgba(0, 153, 204, 0.4);
-}
-
-/* System log textarea */
-#syslog {
-    @apply w-full resize-none overflow-visible rounded-xl p-4 font-mono text-sm leading-relaxed;
-    background: rgba(15, 23, 42, 0.9);
-    color: #e2e8f0;
+[data-page="admin-vpn-openvpn"] .vpn-output {
+    @apply rounded-lg p-4 text-sm;
+    background: rgba(34, 35, 53, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
-    min-height: auto;
-    max-height: none;
-    height: auto;
+    min-height: 3rem;
 }
 
-/* Log level styling within textarea */
-#syslog {
-    @apply whitespace-pre-wrap;
-    word-wrap: break-word;
+[data-page="admin-vpn-openvpn"] .vpn-output:empty {
+    @apply hidden;
 }
 
-/* Modal Styles */
+
 /* Modal overlay - default hidden */
 #modal_overlay {
     @apply fixed inset-0 hidden items-center justify-center p-4;
@@ -2013,7 +2358,7 @@ body.modal-overlay-active #modal_overlay {
 /* Modal buttons */
 .modal.cbi-modal .button-row .btn,
 .modal.cbi-modal .button-row .cbi-button {
-    @apply rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200;
+    @apply rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200;
 }
 
 /* Close/Cancel button */
@@ -2064,7 +2409,7 @@ body.modal-overlay-active #modal_overlay {
     /* IE and Edge */
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
 
     /* sidebar add margin bottom to avoid navbar */
@@ -2342,109 +2687,3 @@ body.modal-overlay-active #modal_overlay {
         @apply p-4;
     }
 }
-
-/* --- datapage specific --- */
-/* System processes buttons(/cgi-bin/luci/admin/status/processes) */
-[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions {
-    @apply whitespace-nowrap;
-}
-
-[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions>div {
-    @apply flex justify-center gap-1;
-}
-
-[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions .btn,
-[data-page="admin-status-processes"] .td.center.nowrap.cbi-section-actions .cbi-button {
-    @apply px-2 py-1.5 text-xs whitespace-nowrap;
-    min-width: auto;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(1) {
-    @apply bg-blue-600 text-white;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(1):hover {
-    @apply bg-blue-700;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(2) {
-    @apply bg-amber-600 text-white;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(2):hover {
-    @apply bg-amber-700;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(3) {
-    @apply bg-red-600 text-white;
-}
-
-[data-page="admin-status-processes"] .btn:nth-child(3):hover {
-    @apply bg-red-700;
-}
-
-/* /cgi-bin/luci/admin/system/package-manager */
-[data-page="admin-system-package-manager"] .controls {
-    @apply gap-5;
-}
-
-[data-page="admin-system-package-manager"] .controls:nth-child(4) .control-group {
-    align-content: flex-start
-}
-
-[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(1) {
-    flex: 1;
-}
-
-[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(2) {
-    flex: 4;
-}
-
-[data-page="admin-system-package-manager"] .controls .pager>*:nth-child(3) {
-    flex: 1;
-}
-
-[data-page="admin-system-package-manager"] #view>div:nth-child(4)>div:nth-child(2)>span>button {
-    @apply text-white bg-slate-500;
-}
-
-[data-page="admin-system-package-manager"] .controls label {
-    @apply mb-2;
-}
-
-/* /cgi-bin/luci/admin/system/admin */
-[data-page="admin-system-admin"] .cbi-button-neutral {
-    @apply bg-indigo-700;
-}
-
-[data-page="admin-system-admin"] .cbi-button-neutral:hover {
-    @apply bg-indigo-800;
-}
-
-/* TTYD Styles */
-[data-page="admin-system-ttyd-ttyd"] #view iframe {
-    min-height: 75vh !important;
-    border-radius: 0px;
-}
-
-/* /cgi-bin/luci/admin/status/realtime */
-[data-page="admin-status-realtime-load"] .cbi-map .cbi-section div {
-    background: #111225 !important;
-}
-
-/* /cgi-bin/luci/admin/system/reboot */
-[data-page="admin-system-reboot"] #view>* {
-    @apply mb-2;
-}
-
-/* /cgi-bin/luci/admin/system/mounts */
-[data-page="admin-system-mounts"] .cbi-button-add {
-    @apply text-white bg-slate-500;
-}
-
-[data-page="admin-system-mounts"] .cbi-button-add:hover {
-    @apply bg-slate-600;
-}
-
-/* /cgi-bin/luci/admin/system/crontab */
-[data-page="admin-system-crontab"] {}
