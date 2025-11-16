@@ -295,18 +295,18 @@ return baseclass.extend({
 
         container.innerHTML = `
         <div style="display: flex; align-items: center; gap: 16px; font-size: 12px;">
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${getStatusColor(cpu)};"></div>
-            <span style="color: #d4d4d8;">CPU: ${cpu}%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${getStatusColor(mem)};"></div>
-            <span style="color: #d4d4d8;">RAM: ${mem}%</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${isOnline ? '#22c55e' : '#ef4444'};${isOnline ? 'animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;' : ''}"></div>
-            <span style="color: #d4d4d8;">${isOnline ? 'Online' : 'Offline'}</span>
-          </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${getStatusColor(cpu)};"></div>
+                <span style="color: #d4d4d8;">CPU: ${cpu}%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${getStatusColor(mem)};"></div>
+                <span style="color: #d4d4d8;">RAM: ${mem}%</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <div style="width: 8px; height: 8px; border-radius: 9999px; background: ${isOnline ? '#22c55e' : '#ef4444'};${isOnline ? 'animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;' : ''}"></div>
+                <span style="color: #d4d4d8;">${isOnline ? 'Online' : 'Offline'}</span>
+            </div>
         </div>
         `;
     }

@@ -34,7 +34,7 @@
 	{% endif %}
 </head>
 
-<body class="min-h-screen bg-dark font-inter antialiased overflow-x-hidden lang_{{ dispatcher.lang }} {{ ctx.authsession ? 'logged-in' : '' }} {{ path != '' ? 'node-' + entityencode(path, true) : 'node-main-login' }}" data-page="{{ entityencode(path, true) }}" style="background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(34, 35, 53, 0.9) 100%), url('{{ media }}/resources/images/background.png') center/cover fixed;">
+<body class="min-h-screen bg-dark font-inter antialiased overflow-x-hidden lang_{{ dispatcher.lang }} {{ ctx.authsession ? 'logged-in' : '' }} {{ path != '' ? 'node-' + entityencode(path, true) : 'node-main-login' }}" data-page="{{ entityencode(path, true) }}">
 
 <!-- Main Header -->
 <header class="fixed top-0 left-0 right-0 z-50 glass-heavy border-b border-white/10 animate-fade-in">
@@ -67,16 +67,6 @@
 
 <!-- Main App Layout -->
 <div class="flex min-h-screen pt-16">
-	<!-- Loading Overlay -->
-	<div id="loadingOverlay" class="fixed inset-0 z-40 flex items-center justify-center glass-heavy opacity-0 transition-all duration-500">
-		<div class="text-center">
-			<div class="relative mb-4">
-				<div class="w-12 h-12 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mx-auto"></div>
-			</div>
-			<p class="text-white font-medium animate-pulse">Loading...</p>
-		</div>
-	</div>
-
 	<!-- Sidebar Navigation -->
 	<aside class="sidebar-orion -translate-x-full lg:translate-x-0 custom-scrollbar" id="sidebar">
 		<nav class="p-4 space-y-2" id="mainmenu">
