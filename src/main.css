@@ -526,7 +526,6 @@
     }
 
     /* Base Button Styles - Unified */
-    button,
     .btn,
     .cbi-button,
     input[type="submit"],
@@ -536,7 +535,6 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    button:hover,
     .btn:hover,
     .cbi-button:hover,
     input[type="submit"]:hover,
@@ -1416,7 +1414,7 @@ button[onclick="toggleUserMenu()"],
 }
 
 /* Tab content controlled by data-tab-active attribute */
-[data-tab-active="false"] {
+:has(> [data-tab-active]) > :not([data-tab-active="true"]) {
     display: none !important;
 }
 
