@@ -219,5 +219,4 @@
         }
     };
     window.addEventListener('beforeunload', cleanup);
-    window.addEventListener('unload', cleanup);
 })(window, document);

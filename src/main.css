@@ -231,21 +231,7 @@
 
     /* Custom Scrollbar */
     .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(34, 35, 53, 0.3);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(0, 153, 204, 0.5);
-        border-radius: 3px;
-    }
-
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 153, 204, 0.7);
+        @apply hidden;
     }
 
     /* Animations */
@@ -741,7 +727,7 @@
 }
 
 .cbi-value-field {
-    @apply flex items-center gap-2;
+    @apply grid grid-cols-1 gap-2;
 }
 
 /* Form Inputs */
@@ -1423,6 +1409,9 @@ button[onclick="toggleUserMenu()"],
     animation: fadeIn 0.3s ease-in-out;
 }
 
+.cbi-modal [data-tab-active="true"] > .cbi-value:has(.cbi-section) {
+    @apply block;
+}
 
 /* Describe Information */
 .cbi-map-descr {
@@ -1538,10 +1527,6 @@ button[onclick="toggleUserMenu()"],
     @apply flex items-center gap-2;
 }
 
-/* Special case: allow wrapping for time sync buttons(/cgi-bin/luci/admin/system/system) */
-.cbi-value-field .control-group {
-    @apply flex-wrap;
-}
 
 /* Hide CBI form hidden elements container */
 form>div:first-child:has(input[type="hidden"][name="token"]) {
@@ -2106,12 +2091,11 @@ body[class*="admin-status-routes"] #view ul {
     @apply hidden;
 }
 
-[data-page="admin-network-network"] #lan-ifc-description,
 [data-page="admin-network-network"] [id$="-ifc-description"] {
     @apply text-sm;
 }
 
-[data-page="admin-network-network"] #lan-ifc-description br {
+[data-page="admin-network-network"] [id$="-ifc-description"] br {
     @apply hidden;
 }
 
