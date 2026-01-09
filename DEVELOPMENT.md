@@ -7,10 +7,9 @@ A comprehensive guide for developing, debugging, and building the Orion theme.
 - [Project Structure](#project-structure)
 - [Development Setup](#development-setup)
 - [Development Mode (HMR)](#development-mode-hmr)
-- [Build Process](#build-process)
-- [Debugging](#debugging)
+- [Build](#build)
 - [OpenWrt Packaging](#openwrt-packaging)
-- [Troubleshooting](#troubleshooting)
+- [Additional Resources](#Additional-Resources)
 
 ---
 
@@ -290,6 +289,8 @@ make package/luci-theme-orion/compile
 **deployment**:
 ```bash
 sshpass -p 'YOUR_PASSWORD' scp -o StrictHostKeyChecking=no luci-theme-orion_0.0.1-r1_all.ipk root@192.168.4.1:/root && sshpass -p 'YOUR_PASSWORD' ssh -o StrictHostKeyChecking=no root@192.168.4.1 'cd /root && opkg install --force-reinstall luci-theme-orion_0.0.1-r1_all.ipk && /etc/init.d/uhttpd restart'
+
+scp -O -i ~/.ssh/YOUR_KEY -r htdocs/luci-static/orion root@192.168.4.1:/www/luci-static/ && scp -O -i ~/.ssh/YOUR_KEY -r ucode/template/themes/orion root@192.168.4.1:/usr/share/ucode/luci/template/themes/ && scp -O -i ~/.ssh/YOUR_KEY -r ucode/view/orion root@192.168.4.1:/usr/share/rpcd/ucode/luci/ && scp -O -i ~/.ssh/YOUR_KEY root/etc/config/orion root@192.168.4.1:/etc/config/ && ssh -i ~/.ssh/YOUR_KEY root@192.168.4.1 '/etc/init.d/uhttpd restart'
 ```
 
 ---
