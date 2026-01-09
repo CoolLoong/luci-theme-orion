@@ -5,24 +5,31 @@
 	// Table to store navbar icons
 	const icons = {};
 
-	// Get all navbar sections
-	const navbars = uci.get('orion', '@navbar') ?? [];
-	for (let section in navbars) {
-		const address = navbars[section].address;
-		const icon_url = navbars[section].icon;
+	// Get all navbar sections using get_all and filter by type
+	const all_config = uci.get_all('orion') ?? {};
+	const navbars = [];
+	for (let section in all_config) {
+		if (all_config[section]['.type'] == 'navbar') {
+			push(navbars, all_config[section]);
+		}
+	}
+
+	for (let item in navbars) {
+		const address = item.address;
+		const icon_url = item.icon;
 
 		if (address && icon_url) {
 			icons[address] = replace(icon_url, /^\/www\/luci-static\/orion\//, '');
 		}
 	}
 
-	// Check navbar enable status
-	const navbar_enabled = config.navbar == '1';
+	// Check navbar enable status (default to enabled if not set)
+	const navbar_enabled = (config.navbar != '0' && config.navbar != 0);
 
 	// Calculate number of enabled navbar items
 	let num_links = 0;
-	for (let section in navbars) {
-		if (navbars[section].enable == 'Enable') {
+	for (let item in navbars) {
+		if (item.enable == '1' || item.enable == 'Enable') {
 			num_links++;
 		}
 	}
@@ -82,12 +89,12 @@
 			const navbar_items = [];
 			let menu_button_name = 'Menu';
 
-			for (let section in navbars) {
-				if (navbars[section].enable == 'Enable') {
-					push(navbar_items, navbars[section]);
+			for (let item in navbars) {
+				if (item.enable == '1' || item.enable == 'Enable') {
+					push(navbar_items, item);
 					// Use the first navbar item's name as menu button name, or keep default
-					if (length(navbar_items) == 1 && navbars[section].name) {
-						menu_button_name = navbars[section].name;
+					if (length(navbar_items) == 1 && item.name) {
+						menu_button_name = item.name;
 					}
 				}
 			}

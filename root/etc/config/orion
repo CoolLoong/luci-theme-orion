@@ -15,7 +15,7 @@ config navbar
 	option line '2'
 	option newtab 'No'
 	option icon 'resources/icons/navbar/terminal.png'
-	option address '/cgi-bin/luci/admin/services/ttyd'
+	option address '/cgi-bin/luci/admin/system/ttyd'
 
 config navbar
 	option name 'Clash'
