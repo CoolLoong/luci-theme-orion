@@ -31,8 +31,6 @@ define Package/$(PKG_NAME)/description
 	Modern LuCI theme with Tailwind CSS and Vite
 endef
 
-PKG_BUILD_DEPENDS:=node/host
-
 define Build/Prepare
 	$(call Build/Prepare/Default)
 	$(CP) ./package.json $(PKG_BUILD_DIR)/
@@ -49,9 +47,7 @@ define Build/Configure
 endef
 
 define Build/Compile
-	cd $(PKG_BUILD_DIR) && npm install --verbose --no-audit --no-fund || \
-		(echo "npm install failed, retrying..." && npm install --verbose --no-audit --no-fund)
-	cd $(PKG_BUILD_DIR) && npm run build
+	cd $(PKG_BUILD_DIR) && bun install && bun run build
 	if [ -d "$(PKG_BUILD_DIR)/ucode/view" ]; then \
 		mkdir -p $(PKG_BUILD_DIR)/htdocs/luci-static/resources/view; \
 		cp -a $(PKG_BUILD_DIR)/ucode/view/* $(PKG_BUILD_DIR)/htdocs/luci-static/resources/view/; \

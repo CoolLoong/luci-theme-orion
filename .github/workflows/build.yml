@@ -1,0 +1,107 @@
+name: Build IPK
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SDK_URL: https://downloads.immortalwrt.org/releases/24.10.1/targets/x86/64/immortalwrt-sdk-24.10.1-x86-64_gcc-13.3.0_musl.Linux-x86_64.tar.zst
+  SDK_DIR: /home/runner/sdk
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout theme source
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt -y update
+          sudo apt install -y build-essential gawk git gettext libncurses-dev libssl-dev \
+            python3 python3-setuptools rsync unzip wget zstd
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache SDK
+        id: cache-sdk
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.SDK_DIR }}
+          key: immortalwrt-sdk-24.10.1-x86-64
+
+      - name: Download and extract SDK
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
+        run: |
+          wget -q "${{ env.SDK_URL }}" -O /tmp/sdk.tar.zst
+          mkdir -p ${{ env.SDK_DIR }}
+          tar --zstd -xf /tmp/sdk.tar.zst -C ${{ env.SDK_DIR }} --strip-components=1
+          rm -f /tmp/sdk.tar.zst
+
+      - name: Update and install feeds
+        if: steps.cache-sdk.outputs.cache-hit != 'true'
+        run: |
+          cd ${{ env.SDK_DIR }}
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: Copy theme package into SDK
+        run: |
+          PKG_DIR=${{ env.SDK_DIR }}/package/luci-theme-orion
+          rm -rf "$PKG_DIR"
+          mkdir -p "$PKG_DIR"
+          cp -a . "$PKG_DIR/"
+          rm -rf "$PKG_DIR/.git"
+
+      - name: Generate config
+        run: |
+          cd ${{ env.SDK_DIR }}
+          cat > .config <<EOF
+          CONFIG_PACKAGE_luci-theme-orion=m
+          EOF
+          make defconfig
+
+      - name: Build IPK
+        run: |
+          cd ${{ env.SDK_DIR }}
+          make package/luci-theme-orion/{clean,compile} V=s -j$(nproc)
+
+      - name: Collect IPK
+        run: |
+          mkdir -p artifacts
+          find ${{ env.SDK_DIR }}/bin -name "luci-theme-orion*.ipk" -exec cp {} artifacts/ \;
+          ls -lh artifacts/
+
+      - name: Upload IPK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: luci-theme-orion
+          path: artifacts/*.ipk
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*.ipk
+          generate_release_notes: true
